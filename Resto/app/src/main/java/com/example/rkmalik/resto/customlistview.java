@@ -5,6 +5,7 @@ package com.example.rkmalik.resto;
  */
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +13,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class customlistview extends ArrayAdapter<String>{
+import com.example.rkmalik.data.Restaurant;
+
+import java.util.List;
+
+public class customlistview extends ArrayAdapter<Bitmap>{
 
     private final Activity context;
-    private final String[] web;
-    private final Integer[] imageId;
+    private final Bitmap[] images;
 
-    public customlistview (Activity context, String [] web, Integer [] imageId)
+    public customlistview (Activity context, Bitmap[] images)//String [] web, Integer [] imageId)
     {
-        super(context, R.layout.list_single, web);
+        super(context, R.layout.list_single, images);
         this.context = context;
-        this.web = web;
-        this.imageId = imageId;
+        this.images = images;
     }
 
     public View getView(int position, View view, ViewGroup parent) {
@@ -31,8 +34,7 @@ public class customlistview extends ArrayAdapter<String>{
         View rowView= inflater.inflate(R.layout.list_single, null, true);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
- 
-        imageView.setImageResource(imageId[position]);
+        imageView.setImageBitmap(images[position]);
         return rowView;
     }
 
