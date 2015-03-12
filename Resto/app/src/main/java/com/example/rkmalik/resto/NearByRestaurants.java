@@ -60,6 +60,7 @@ public class NearByRestaurants extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(NearByRestaurants.this, "You Clicked at ", Toast.LENGTH_SHORT).show();
             return true;
         }
 
