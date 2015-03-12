@@ -32,9 +32,9 @@ public class customlistview extends ArrayAdapter<Bitmap>{
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView= inflater.inflate(R.layout.list_single, null, true);
-
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
         imageView.setImageBitmap(images[position]);
+
         return rowView;
     }
 
