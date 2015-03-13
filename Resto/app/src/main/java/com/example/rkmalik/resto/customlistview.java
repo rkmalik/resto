@@ -34,7 +34,6 @@ public class customlistview extends ArrayAdapter<Bitmap>{
         View rowView= inflater.inflate(R.layout.list_single, null, true);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
         imageView.setImageBitmap(images[position]);
-
         return rowView;
     }
 

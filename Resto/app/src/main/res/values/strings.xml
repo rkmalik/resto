@@ -2,4 +2,8 @@
     <string name="app_name">Resto</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">My Settings</string>
+    <string name="title_activity_rest_menu">RestMenu</string>
+    <string name="title_activity_restaurant">Restaurant</string>
+    <string name="label_menu">Menu</string>
+    <string name="label_favorites">Favorites</string>
 </resources>
