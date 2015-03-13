@@ -4,11 +4,16 @@
     android:background="@drawable/background">
 
     <TableRow>
+        <TextView
+           android:id="@+id/list_item"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
 
         <ImageView
             android:id="@+id/img"
             android:layout_width="300dp"
-            android:layout_height="100dp"/>
+            android:layout_height="100dp"
+            android:layout_column="8" />
 
     </TableRow>
 </TableLayout>

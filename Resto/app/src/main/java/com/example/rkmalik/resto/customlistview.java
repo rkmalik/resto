@@ -31,7 +31,7 @@ public class customlistview extends ArrayAdapter<String>{
         View rowView= inflater.inflate(R.layout.list_single, null, true);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
- 
+
         imageView.setImageResource(imageId[position]);
         return rowView;
     }
