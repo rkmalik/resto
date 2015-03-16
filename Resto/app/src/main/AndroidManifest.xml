@@ -19,13 +19,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
+        <!--activity
             android:name=".AppSettingActivity"
             android:label="@string/title_activity_app_setting"
             android:parentActivityName=".NearByRestaurants" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.rkmalik.resto.NearByRestaurants" />
+        </activity-->
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 
