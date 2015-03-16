@@ -7,6 +7,7 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="label_favorites">Favourite</string>
     <string name="label_menu">Menu</string>
+    <string name="title_activity_food_items">FoodItems</string>
     <string-array name="navigation_array">
         <item>Search</item>
         <item>Setting</item>

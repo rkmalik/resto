@@ -1,11 +1,14 @@
 package com.example.rkmalik.resto;
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.rkmalik.data.FoodItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +61,9 @@ public class RestaurantListViewFragment extends ListFragment {
         Rest_ListViewItem_Holder item = mItems.get(position);
         
         // do something
-        Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
+        Intent foodItemsIntent = new Intent(getActivity(), FoodItems.class);
+        foodItemsIntent.putExtra("name", item.title);
+        startActivity(foodItemsIntent);
     }
 }
