@@ -41,7 +41,7 @@ public class NearByRestaurants extends ActionBarActivity {
         //SQLiteDatabase database = dbHelper.getDatabase();
         SQLiteDatabase database = dbHelper.openDatabase();
 
-            List<Restaurant> restaurantList = RestaurantModel.getRestList(database);
+        List<Restaurant> restaurantList = RestaurantModel.getRestList(database);
 
 
 
@@ -91,4 +91,6 @@ public class NearByRestaurants extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

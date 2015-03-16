@@ -11,11 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.example.rkmalik.data.Restaurant;
-
-import java.util.List;
 
 public class customlistview extends ArrayAdapter<Bitmap>{
 
