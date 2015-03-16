@@ -5,6 +5,8 @@
     <string name="action_settings">My Settings</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="label_favorites">Favourite</string>
+    <string name="label_menu">Menu</string>
     <string-array name="navigation_array">
         <item>Search</item>
         <item>Setting</item>
@@ -24,9 +26,6 @@
         <item>KEY_ICON</item>
         <item>KEY_TITLE</item>
     </string-array>
-
-
-
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">We are not supporting web search as of now.</string>
     <color name="gray">#808080</color>

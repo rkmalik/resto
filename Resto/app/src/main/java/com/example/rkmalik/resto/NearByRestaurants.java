@@ -22,9 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
-
-import org.w3c.dom.Element;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,8 +62,6 @@ public class NearByRestaurants extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.main_activity);
 
 

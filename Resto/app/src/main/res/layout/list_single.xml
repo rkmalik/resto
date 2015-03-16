@@ -3,6 +3,11 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/background">
     <TableRow>
+        <TextView
+           android:id="@+id/list_item"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
         <ImageView
             android:id="@+id/img"
             android:layout_width="100dp"
