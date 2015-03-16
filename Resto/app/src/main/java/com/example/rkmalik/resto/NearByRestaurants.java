@@ -244,13 +244,13 @@ public class NearByRestaurants extends Activity {
         setTitle(mPlanetTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);*/
 
-        /*if (position == 1) {
+        if (position == 1) {
 
-            Intent myIntent = new Intent(NearByRestaurants.this, AppSettingActivity.class);
-            //myIntent.putExtra("key", "Rohit");
-            startActivity(myIntent);
+            Intent settingsintent = new Intent(NearByRestaurants.this, SettingsActivity.class);
+            settingsintent.putExtra("key", "Rohit");
+            startActivity(settingsintent);
             //return;
-        }*/
+        }
 
         // Putting a toaster here
         //Toast.makeText(NearByRestaurants.this, mNavigationTitles[position], Toast.LENGTH_SHORT).show();
