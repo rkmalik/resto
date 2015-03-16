@@ -1,5 +1,7 @@
 package com.example.rkmalik.resto;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,13 +11,18 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.rkmalik.data.Restaurant;
+import com.example.rkmalik.model.DBHelper;
+import com.example.rkmalik.model.RestaurantModel;
+
+import java.util.List;
 
 public class NearByRestaurants extends ActionBarActivity {
 
     ListView list;
     String[] web = {
-            "Chipotle",
-            "Subway",
+            "Tick",
+            "Tock",
     } ;
 
     Integer[] imageId = {
@@ -29,8 +36,26 @@ public class NearByRestaurants extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_near_by_restaurants);
 
+        DBHelper dbHelper = new DBHelper(this);
+
+        //SQLiteDatabase database = dbHelper.getDatabase();
+        SQLiteDatabase database = dbHelper.openDatabase();
+
+            List<Restaurant> restaurantList = RestaurantModel.getRestList(database);
+
+
+
+
+        web = new String[restaurantList.size()];
+        for(int i=0; i<restaurantList.size(); i++)
+            web[i] = restaurantList.get(i).getName();
+
+
+        Bitmap[] images = new Bitmap[restaurantList.size()];
+        for(int i=0; i<restaurantList.size(); i++)
+            images[i] = restaurantList.get(i).getLogo();
         customlistview adapter = new
-                customlistview(NearByRestaurants.this, web, imageId);
+                customlistview(NearByRestaurants.this, images);
 
         list=(ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
@@ -60,6 +85,7 @@ public class NearByRestaurants extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(NearByRestaurants.this, "You Clicked at ", Toast.LENGTH_SHORT).show();
             return true;
         }
 
