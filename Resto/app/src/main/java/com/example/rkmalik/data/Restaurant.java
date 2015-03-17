@@ -1,6 +1,7 @@
 package com.example.rkmalik.data;
 
 import android.graphics.Bitmap;
+import android.os.Parcelable;
 
 import java.sql.Blob;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by vicks on 11/03/15.
  */
-public class Restaurant {
+public class Restaurant{
     private int id=-1;
     private String name=null;
     private String cityName=null;

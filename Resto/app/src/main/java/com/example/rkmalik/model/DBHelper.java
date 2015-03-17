@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.rkmalik.data.Category;
@@ -77,7 +78,13 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase checkDb = null;
         String path = DB_PATH+DB_NAME;
-        checkDb = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
+        try
+        {
+            checkDb = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
+        }
+        catch(SQLiteException e)
+        {}
+
         if(null != checkDb)
             checkDb.close();
         return checkDb!=null;
