@@ -23,6 +23,7 @@ public class FavoritesFragment extends Fragment /*implements AdapterView.OnItemC
     ListViewAdapter listViewAdapter;
     ListView listView;
     List<String> items;
+    List<String> pronun;
     Activity fragActivity;
 
     @Override
@@ -40,36 +41,33 @@ public class FavoritesFragment extends Fragment /*implements AdapterView.OnItemC
 
         prepareData();
 
-        listViewAdapter = new ListViewAdapter(fragActivity, items);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.println(items.get(i));
-                Intent detaiIntent = new Intent(fragActivity, FoodItemDetailActivity.class);
-                detaiIntent.putExtra("name", items.get(i));
-                startActivity(detaiIntent);
-            }
-        });
+        listViewAdapter = new ListViewAdapter(fragActivity, items, pronun);
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                System.out.println(items.get(i));
+//                Intent detaiIntent = new Intent(fragActivity, FoodItemDetailActivity.class);
+//                detaiIntent.putExtra("name", items.get(i));
+//                startActivity(detaiIntent);
+//            }
+//        });
 
         listView.setAdapter(listViewAdapter);
 
         return rootView;
     }
 
-
-    void prepareData(){
+    void prepareData() {
         items = new ArrayList<String>();
-
         items.add("Green Pepper");
         items.add("Flat Bread");
         items.add("Monterey Cheddar (Shredded)");
         items.add("Red Wine Vinegar");
-    }
 
-//    @Override
-//    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//        Intent detaiIntent = new Intent(fragActivity, FoodItemDetailActivity.class);
-//        detaiIntent.putExtra("name", items.get(i));
-//        startActivity(detaiIntent);
-//    }
+        pronun = new ArrayList<String>();
+        pronun.add("/Pronun /ciation");
+        pronun.add("/Pronun /ciation");
+        pronun.add("/Pronun /ciation");
+        pronun.add("/Pronun /ciation");
+    }
 }
