@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -51,7 +52,16 @@ public class FoodItemDetailFragment extends Fragment{
 
         // Show the dummy content as text in a TextView.
         if (itemName != null) {
-            ((TextView) rootView.findViewById(R.id.fooditem_detail)).setText(itemName);
+            ((TextView) rootView.findViewById(R.id.item_name)).setText(itemName);
+            ((TextView) rootView.findViewById(R.id.item_sub_name)).setText("Alias Name");
+            ((TextView) rootView.findViewById(R.id.item_pronun)).setText("/pronun /ciation");
+            ((ImageView) rootView.findViewById(R.id.image_vegnonveg_1)).setImageResource(R.drawable.no_image);
+            ((ImageView) rootView.findViewById(R.id.imageBtn_favorite_1)).setImageResource(R.drawable.ic_action_favorite);
+            ((ImageView) rootView.findViewById(R.id.imageBtn_speaker_1)).setImageResource(R.drawable.no_image);
+            ((ImageView) rootView.findViewById(R.id.image_item_1)).setImageResource(R.drawable.chipotle);
+            ((ImageView) rootView.findViewById(R.id.image_item_2)).setImageResource(R.drawable.polotropical);
+            ((TextView) rootView.findViewById(R.id.item_nutrition_header)).setText("Nutrition (Serving Size : 1 cup sliced)");
+            ((TextView) rootView.findViewById(R.id.item_nutrition_detail)).setText("1 calories");
         }
 
         return rootView;

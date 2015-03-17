@@ -26,6 +26,7 @@ public class MenuItemsFragment extends Fragment {
     List<String> categories;
     HashMap<String, List<String>> items;
     HashMap<String, List<Integer>> itemImages;
+    HashMap<String, List<String>> itemPronun;
     Activity fragActivity;
 
     @Override
@@ -37,19 +38,19 @@ public class MenuItemsFragment extends Fragment {
        listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView2);
        prepareDataList();
 
-       listAdapter = new ExpandableListAdapter(fragActivity, categories, items, itemImages);
+       listAdapter = new ExpandableListAdapter(fragActivity, categories, items, itemImages, itemPronun);
+
+//       listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener(){
+//
+//           @Override
+//           public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i2, long l) {
+//               Intent detailIntent = new Intent(fragActivity, FoodItemDetailActivity.class);
+//               detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, items.get(categories.get(i)).get(i2));
+//               startActivity(detailIntent);
+//               return false;
+//           }
+//       });
        listView.setAdapter(listAdapter);
-
-       listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener(){
-
-           @Override
-           public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i2, long l) {
-               Intent detailIntent = new Intent(fragActivity, FoodItemDetailActivity.class);
-               detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, items.get(categories.get(i)).get(i2));
-               startActivity(detailIntent);
-               return false;
-           }
-       });
        return rootView;
     }
 
@@ -57,6 +58,7 @@ public class MenuItemsFragment extends Fragment {
         categories = new ArrayList<String>();
         items = new HashMap<String, List<String>>();
         itemImages = new HashMap<String, List<Integer>>();
+        itemPronun = new HashMap<String, List<String>>();
 
         categories.add("Breads");
         categories.add("Cheese");
@@ -73,6 +75,12 @@ public class MenuItemsFragment extends Fragment {
 //        breadImgs.add(R.drawable.o_BreadItalianHerb);
 //        breadImgs.add(R.drawable.o_BreadWheat);
 //        breadImgs.add(R.drawable.o_BreadHOWheat);
+        List<String> bPronun = new ArrayList<String>();
+        bPronun.add("/Pronun /ciation");
+        bPronun.add("/Pronun /ciation");
+        bPronun.add("/Pronun /ciation");
+        bPronun.add("/Pronun /ciation");
+        bPronun.add("/Pronun /ciation");
 
         List<String> cheese = new ArrayList<String>();
         cheese.add("White American");
@@ -90,7 +98,19 @@ public class MenuItemsFragment extends Fragment {
 //        cheeseImgs.add(R.drawable.o_CheeseMozza);
 //        cheeseImgs.add(R.drawable.o_CheeseFeta);
 
+        List<String> chPronun = new ArrayList<String>();
+        chPronun.add("/Pronun /ciation");
+        chPronun.add("/Pronun /ciation");
+        chPronun.add("/Pronun /ciation");
+        chPronun.add("/Pronun /ciation");
+        chPronun.add("/Pronun /ciation");
+        chPronun.add("/Pronun /ciation");
+        chPronun.add("/Pronun /ciation");
+
         items.put(categories.get(0), breads);
         items.put(categories.get(1), cheese);
+
+        itemPronun.put(categories.get(0), bPronun);
+        itemPronun.put(categories.get(1), chPronun);
     }
 }
