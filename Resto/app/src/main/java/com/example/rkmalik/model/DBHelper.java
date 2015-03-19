@@ -63,6 +63,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public void createDatabase()
     {
         boolean isDbExist = checkDatabase();
+       /* if(isDbExist)
+            System.out.println("This is already present...");
+        else
+            System.out.println("Have to create..");*/
         if(!isDbExist)
         {
             this.getReadableDatabase();
@@ -117,6 +121,13 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {}
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
+        try {
+            copyDatabase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -34,12 +34,13 @@ public class RestaurantModel {
     }
 
     public static List<FoodItem> getFoodItemsBasedOnCategory(SQLiteDatabase db, int catId) {
+        //System.out.println("category id : "+String.valueOf(catId));
         Cursor cursor = db.rawQuery("SELECT * FROM fooditem WHERE catId=" + catId + "", null);
         return getFoodItemsFromCursor(cursor);
     }
 
     public static List<FoodItem> getFavourites(SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery("SELECT * FROM fooditem WHERE isFav=1", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM fooditem WHERE is_fav=1", null);
         return getFoodItemsFromCursor(cursor);
     }
 
@@ -48,11 +49,15 @@ public class RestaurantModel {
         List<FoodItem> foodItems = new ArrayList();
         while (cursor.isAfterLast() == false) {
             FoodItem foodItem = new FoodItem();
-            foodItem.setId(cursor.getInt(1));
-            foodItem.setName(cursor.getString(2));
-            foodItem.setDesc(cursor.getString(3));
-            foodItem.setFav(cursor.getInt(5) == 1 ? true : false);
-            foodItem.setVeg(cursor.getInt(6) == 1 ? true : false);
+            foodItem.setId(cursor.getInt(cursor.getColumnIndex("_id")));
+            foodItem.setName(cursor.getString(cursor.getColumnIndex("name")));
+            foodItem.setPhoneticName(cursor.getString(cursor.getColumnIndex("phonetic_name")));
+            foodItem.setLocalName(cursor.getString(cursor.getColumnIndex("local_name")));
+            foodItem.setFav(cursor.getInt(cursor.getColumnIndex("is_fav")) == 1 ? true : false);
+            foodItem.setVeg(cursor.getInt(cursor.getColumnIndex("is_veg")) == 1 ? true : false);
+            foodItem.setDesc(cursor.getString(cursor.getColumnIndex("desc")));
+            byte[] img = cursor.getBlob(cursor.getColumnIndex("main_image"));
+            foodItem.setMainImage(BitmapFactory.decodeByteArray(img, 0, img.length));
             //TODO : Last accessed timestamp
             //foodItem.setLastAccessed(cursor.getString(7)==null?new Time(): Time.parse(cursor.getString(7)));
             foodItems.add(foodItem);
@@ -62,17 +67,17 @@ public class RestaurantModel {
     }
 
     public static void updateIsFavFoodItem(SQLiteDatabase db, FoodItem foodItem) {
-        db.execSQL("UPDATE fooditem SET isFav=" + (foodItem.isFav() ? "1" : "0") + " WHERE id=" + foodItem.getId() + "");
+        db.execSQL("UPDATE fooditem SET is_fav=" + (foodItem.isFav() ? "1" : "0") + " WHERE _id=" + foodItem.getId() + "");
     }
 
     public static List<Category> getCategoriesBasedOnRestaurant(SQLiteDatabase db, int restId) {
-        Cursor cursor = db.rawQuery("SELECT * FROM menu WHERE restId=" + restId + "", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM menu WHERE rest_id=" + restId + " ORDER BY display_order", null);
         cursor.moveToFirst();
         List<Category> categories = new ArrayList();
         while (cursor.isAfterLast() == false) {
             Category category = new Category();
-            category.setId(cursor.getInt(1));
-            category.setName(cursor.getString(2));
+            category.setId(cursor.getInt(cursor.getColumnIndex("category_id")));
+            category.setName(cursor.getString(cursor.getColumnIndex("category_name")));
             categories.add(category);
             cursor.moveToNext();
         }

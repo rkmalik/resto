@@ -1,5 +1,6 @@
 package com.example.rkmalik.resto;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -31,8 +32,6 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_items);
-
-
 
         //Initialization
         viewPager = (ViewPager) findViewById(R.id.pager);

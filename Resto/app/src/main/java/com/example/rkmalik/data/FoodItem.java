@@ -1,22 +1,27 @@
 package com.example.rkmalik.data;
 
+import android.graphics.Bitmap;
 import android.text.format.Time;
 
+import java.io.Serializable;
 import java.sql.Blob;
 
 /**
  * Created by vicks on 11/03/15.
  */
-public class FoodItem {
+public class FoodItem implements Serializable {
     private int id=-1;
     private String name=null;
+    private String phoneticName = null;
+    private String localName = null;
     private String desc = null;
     private int catId=-1;
     private boolean isFav=false;
     private boolean isVeg=false;
     private int calories=-1;
+    private String servingSize = null;
     private Time lastAccessed=null;
-    private Blob mainImage = null;
+    private Bitmap mainImage = null;
 
     public int getId() {
         return id;
@@ -82,11 +87,35 @@ public class FoodItem {
         this.desc = desc;
     }
 
-    public Blob getMainImage() {
+    public Bitmap getMainImage() {
         return mainImage;
     }
 
-    public void setMainImage(Blob mainImage) {
+    public void setMainImage(Bitmap mainImage) {
         this.mainImage = mainImage;
+    }
+
+    public String getPhoneticName() {
+        return phoneticName;
+    }
+
+    public void setPhoneticName(String phoneticName) {
+        this.phoneticName = phoneticName;
+    }
+
+    public String getLocalName() {
+        return localName;
+    }
+
+    public void setLocalName(String localName) {
+        this.localName = localName;
+    }
+
+    public String getServingSize() {
+        return servingSize;
+    }
+
+    public void setServingSize(String servingSize) {
+        this.servingSize = servingSize;
     }
 }

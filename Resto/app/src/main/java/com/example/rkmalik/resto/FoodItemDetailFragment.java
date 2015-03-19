@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.rkmalik.data.FoodItem;
+
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -29,6 +31,7 @@ public class FoodItemDetailFragment extends Fragment{
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
+    private FoodItem foodItem;
 
     public FoodItemDetailFragment() {
     }
@@ -42,7 +45,9 @@ public class FoodItemDetailFragment extends Fragment{
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             itemName = getArguments().get(ARG_ITEM_ID).toString();
+
         }
+        foodItem = (FoodItem) getArguments().get("food item");
     }
 
     @Override
@@ -52,7 +57,7 @@ public class FoodItemDetailFragment extends Fragment{
 
         // Show the dummy content as text in a TextView.
         if (itemName != null) {
-            ((TextView) rootView.findViewById(R.id.item_name)).setText(itemName);
+            ((TextView) rootView.findViewById(R.id.item_name)).setText(foodItem.getName());//.setText(itemName);
             ((TextView) rootView.findViewById(R.id.item_sub_name)).setText("Alias Name");
             ((TextView) rootView.findViewById(R.id.item_pronun)).setText("/pronun /ciation");
             ((ImageView) rootView.findViewById(R.id.image_vegnonveg_1)).setImageResource(R.drawable.no_image);

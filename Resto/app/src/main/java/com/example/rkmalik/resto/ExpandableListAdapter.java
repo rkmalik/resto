@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.HashMap;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.rkmalik.data.Category;
+
 import org.w3c.dom.Text;
 
 /**
@@ -24,58 +27,55 @@ import org.w3c.dom.Text;
  */
 public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private Context _context;
-    private List<String> _listDataHeader;
-    private HashMap<String, List<String>> _listChildData;
-    private HashMap<String, List<Integer>> _listImageIds;
-    private HashMap<String, List<String>> _listChildPronun;
+    private List<Category> _listCategory;
 
-    public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData,
-                                 HashMap<String, List<Integer>> listImageIds,
-                                 HashMap<String, List<String>> listChildPronun){
+    public ExpandableListAdapter(Context context, List<Category> _listCategory){
         this._context = context;
-        this._listDataHeader = listDataHeader;
-        this._listChildData = listChildData;
-        this._listImageIds = listImageIds;
-        this._listChildPronun = listChildPronun;
+        this._listCategory = _listCategory;
     }
 
     @Override
-    public int getGroupCount() {
-        return this._listDataHeader.size();
+    public int getGroupCount()
+    {
+        return this._listCategory.size();
     }
 
     @Override
-    public int getChildrenCount(int grpPos) {
-        return this._listChildData.get(this._listDataHeader.get(grpPos)).size();
+    public int getChildrenCount(int grpPos)
+    {
+        return this._listCategory.get(grpPos).getFoodItems().size();
     }
 
     @Override
-    public Object getGroup(int grpPos) {
-        return this._listDataHeader.get(grpPos);
+    public Object getGroup(int grpPos)
+    {
+        return this._listCategory.get(grpPos).getName();
     }
 
     @Override
     public Object getChild(int grpPos, int childPos) {
-        return this._listChildData.get(this._listDataHeader.get(grpPos)).get(childPos);
+        return this._listCategory.get(grpPos).getFoodItems().get(childPos).getName();
     }
 
     public Object getChildImage(int grpPos, int childPos){
-        return this._listImageIds.get(this._listDataHeader.get(grpPos)).get(childPos);
+        return this._listCategory.get(grpPos).getFoodItems().get(childPos).getMainImage();
     }
 
     @Override
-    public long getGroupId(int grpPos) {
+    public long getGroupId(int grpPos)
+    {
         return grpPos;
     }
 
     @Override
-    public long getChildId(int grpPos, int childPos) {
+    public long getChildId(int grpPos, int childPos)
+    {
         return childPos;
     }
 
     @Override
-    public boolean hasStableIds() {
+    public boolean hasStableIds()
+    {
         return false;
     }
 
@@ -96,13 +96,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     }
 
     public String getChildPronun(int grpPos, int childPos){
-        return this._listChildPronun.get(this._listDataHeader.get(grpPos)).get(childPos);
+        return String.valueOf(this._listCategory.get(grpPos).getFoodItems().get(childPos).getCalories());
     }
 
     @Override
     public View getChildView(final int grpPos, final int childPos, boolean isLastChild, View convertView, ViewGroup parent) {
         final String childText = (String) getChild(grpPos, childPos);
-        //final Integer childImg = (Integer) getChildImage(grpPos, childPos);
         final String childPronun = (String) getChildPronun(grpPos, childPos);
 
         if(convertView == null){
@@ -111,12 +110,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         }
 
         ImageView imgListChild = (ImageView) convertView.findViewById(R.id.imageView);
-        imgListChild.setImageResource(R.drawable.chipotle);
+        imgListChild.setImageBitmap((Bitmap) getChildImage(grpPos, childPos));
         imgListChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
                 detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, (String) getChild(grpPos, childPos));
+                detailIntent.putExtra("food item", _listCategory.get(grpPos).getFoodItems().get(childPos));
                 _context.startActivity(detailIntent);
             }
         });

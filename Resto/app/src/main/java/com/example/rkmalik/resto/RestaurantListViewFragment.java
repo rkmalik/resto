@@ -44,6 +44,8 @@ public class RestaurantListViewFragment extends ListFragment {
 
         DBHelper dbHelper = new DBHelper(this.getActivity().getApplicationContext());
         database = dbHelper.openDatabase();
+//        dbHelper.onUpgrade(database, 1, 2);
+  //      database = dbHelper.openDatabase();
         restaurantListFromDB = RestaurantModel.getRestList(database);
 
         LocationSettings gps = new LocationSettings(this.getActivity());
@@ -74,6 +76,8 @@ public class RestaurantListViewFragment extends ListFragment {
         // do something
        // Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
         Intent foodItemsIntent = new Intent(getActivity(), FoodItems.class);
+        foodItemsIntent.putExtra("id", selectedRestaurant.getId());
+        foodItemsIntent.putExtra("restName", selectedRestaurant.getName());
         //foodItemsIntent.putParcelableArrayListExtra("restaurant", selectedRestaurant);
         startActivity(foodItemsIntent);
     }
