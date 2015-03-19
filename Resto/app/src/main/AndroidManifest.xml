@@ -12,7 +12,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-	android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+	    android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
         <meta-data
             android:name="DATABASE"
             android:value="restoDB" />
@@ -27,7 +27,7 @@
             android:value="com.example.rkmalik.resto" />
         <activity
             android:name=".NearByRestaurants"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -36,16 +36,21 @@
         <activity
             android:name=".FoodItems"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light" />
+            android:parentActivityName=".NearByRestaurants"
+            android:theme="@style/Theme.AppCompat">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.rkmalik.resto.NearByRestaurants" />
+        </activity>
         <activity
             android:name=".FoodItemDetailActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:parentActivityName=".FoodItems" >
+            android:parentActivityName=".FoodItems"
+            android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.rkmalik.resto.FoodItems" />
-	</activity>
+	    </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >

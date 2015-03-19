@@ -16,7 +16,7 @@
         <RelativeLayout android:id="@+id/name_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp">
+            android:layout_margin="20dp">
 
             <!-- the name view -->
             <TextView android:id="@+id/item_name"
@@ -24,7 +24,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@android:style/TextAppearance.Large"
                 android:focusable="false"
-                android:clickable="false"/>
+                android:clickable="false"
+                android:textColor="#000000"/>
 
             <!-- the alias view -->
             <TextView android:id="@+id/item_sub_name"
@@ -34,22 +35,14 @@
                 android:focusable="false"
                 android:clickable="false"
                 android:layout_marginBottom="50dp"
-                android:layout_below="@+id/item_name"/>
-
-            <!-- the pronunciation view -->
-            <TextView android:id="@+id/item_pronun"
-                android:layout_below="@id/item_sub_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:focusable="false"
-                android:clickable="false"
-                />
+                android:layout_below="@+id/item_name"
+                android:textColor="#000000"/>
         </RelativeLayout>
+
         <RelativeLayout android:id="@+id/button_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
+            android:layout_margin="20dp"
             android:layout_toRightOf="@id/name_container">
             <ImageView
                 android:layout_width="40dp"
@@ -60,29 +53,48 @@
                 android:focusable="false"
                 android:clickable="false"/>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageBtn_favorite_1"
                 android:padding="5dp"
-                android:layout_toRightOf="@id/image_vegnonveg_1"
+                android:button="@android:drawable/btn_star"
+                android:layout_below="@id/image_vegnonveg_1"
                 android:focusable="false"
                 android:clickable="false"/>
+        </RelativeLayout>
+
+        <RelativeLayout android:id="@+id/pronun_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_container"
+            android:layout_margin="20dp">
+
+            <!-- the pronunciation view -->
+            <TextView android:id="@+id/item_pronun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:focusable="false"
+                android:clickable="false"
+                android:layout_marginRight="50dp"
+                android:textColor="#000000"/>
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/imageBtn_speaker_1"
+                android:layout_toRightOf="@id/item_pronun"
                 android:padding="5dp"
-                android:layout_below="@id/image_vegnonveg_1"
                 android:focusable="false"
                 android:clickable="false"/>
         </RelativeLayout>
+
         <RelativeLayout android:id="@+id/item_image_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
-            android:layout_below="@id/name_container">
+            android:layout_margin="20dp"
+            android:layout_below="@id/pronun_container">
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -101,10 +113,11 @@
                 android:focusable="false"
                 android:clickable="false"/>
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
+            android:layout_margin="20dp"
             android:layout_below="@id/item_image_container">
 
             <TextView android:id="@+id/item_nutrition_header"
@@ -112,7 +125,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:focusable="false"
-                android:clickable="false"/>
+                android:clickable="false"
+                android:textColor="#000000"/>
 
             <!-- the alias view -->
             <TextView android:id="@+id/item_nutrition_detail"
@@ -121,7 +135,8 @@
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:focusable="false"
                 android:clickable="false"
-                android:layout_below="@+id/item_nutrition_header"/>
+                android:layout_below="@+id/item_nutrition_header"
+                android:textColor="#000000"/>
         </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

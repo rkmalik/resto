@@ -6,13 +6,12 @@ import java.util.HashMap;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.content.Context;
-import android.widget.ImageButton;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,9 +28,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private Context _context;
     private List<Category> _listCategory;
 
-    public ExpandableListAdapter(Context context, List<Category> _listCategory){
+    //public ExpandableListAdapter(Context context, List<Category> _listCategory){
+      //  this._context = context;
+        //this._listCategory = _listCategory;
+    private List<String> _listDataHeader;
+    private HashMap<String, List<String>> _listChildData;
+    private HashMap<String, List<Integer>> _listImageIds;
+    private HashMap<String, List<String>> _listChildPronun;
+   // private RestoSoundPlayer player;
+
+    public ExpandableListAdapter(Context context, List<Category> _listCategory)
+    {
+       this._listCategory = _listCategory;
         this._context = context;
-        this._listCategory = _listCategory;
+      /*  this._listDataHeader = listDataHeader;
+        this._listChildData = listChildData;
+        this._listImageIds = listImageIds;
+        this._listChildPronun = listChildPronun;
+        player = new RestoSoundPlayer();*/
     }
 
     @Override
@@ -146,8 +160,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         ImageView imgVegNonVeg = (ImageView) convertView.findViewById(R.id.image_vegnoveg);
         imgVegNonVeg.setImageResource(R.drawable.no_image);
 
-        ImageView imgFavButton = (ImageView) convertView.findViewById(R.id.imageBtn_favorite);
-        imgFavButton.setImageResource(R.drawable.ic_action_favorite);
+        CheckBox imgFavButton = (CheckBox) convertView.findViewById(R.id.imageBtn_favorite);
         imgFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,6 +177,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             public void onClick(View view) {
                 System.out.println("Speaker Clicked");
                 Toast.makeText(_context, "Speaker Clicked", Toast.LENGTH_SHORT);
+               // player.playSound(_context, R.raw.croissant);
             }
         });
         

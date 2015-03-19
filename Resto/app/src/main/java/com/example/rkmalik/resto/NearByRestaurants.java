@@ -304,6 +304,13 @@ public class NearByRestaurants extends Activity {
                 }*/
                 Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
                 return true;
+
+            case android.R.id.home:
+                if(mDrawerLayout.isDrawerOpen(mDrawer)){
+                    mDrawerLayout.closeDrawer(mDrawer);
+                } else {
+                    mDrawerLayout.openDrawer(mDrawer);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
