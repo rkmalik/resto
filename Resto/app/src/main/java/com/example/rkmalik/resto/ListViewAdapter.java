@@ -7,6 +7,7 @@ import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.content.Context;
@@ -22,11 +23,13 @@ public class ListViewAdapter implements ListAdapter{
     private Context _context;
     private List<String> _listData;
     private List<String> _listPronun;
+    private RestoSoundPlayer player;
 
     public ListViewAdapter(Context context, List<String> listData, List<String> listPronun){
         this._context = context;
         this._listData = listData;
         this._listPronun = listPronun;
+        player = new RestoSoundPlayer();
     }
 
     @Override
@@ -117,15 +120,14 @@ public class ListViewAdapter implements ListAdapter{
         ImageView imgVegNonVeg = (ImageView) convertView.findViewById(R.id.image_vegnoveg1);
         imgVegNonVeg.setImageResource(R.drawable.no_image);
 
-        ImageView imgFavButton = (ImageView) convertView.findViewById(R.id.imageBtn_favorite1);
-        imgFavButton.setImageResource(R.drawable.ic_action_favorite);
+        /*CheckBox imgFavButton = (CheckBox) convertView.findViewById(R.id.imageBtn_favorite1);
         imgFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println("Favorite Clicked");
                 Toast.makeText(_context, "Favorite Clicked", Toast.LENGTH_SHORT);
             }
-        });
+        });*/
 
         ImageView imgSpkButton = (ImageView) convertView.findViewById(R.id.imageBtn_speaker1);
         imgSpkButton.setImageResource(R.drawable.no_image);
@@ -135,6 +137,7 @@ public class ListViewAdapter implements ListAdapter{
             public void onClick(View view) {
                 System.out.println("Speaker Clicked");
                 Toast.makeText(_context, "Speaker Clicked", Toast.LENGTH_SHORT);
+                player.playSound(_context, R.raw.croissant);
             }
         });
 

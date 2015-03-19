@@ -39,7 +39,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:focusable="false"
-                android:clickable="false"/>
+                android:clickable="false"
+                android:textColor="#000000"/>
 
             <!-- the pronunciation view -->
             <TextView android:id="@+id/listItemPronun"
@@ -48,37 +49,37 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:focusable="false"
-                android:clickable="false"/>
+                android:clickable="false"
+                android:textColor="#000000"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/listItemPronun"
-                android:focusable="false"
+                android:focusable="true"
                 android:clickable="false">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:padding="5dp"
                     android:layout_marginRight="50dp"
                     android:id="@+id/image_vegnoveg"
                     android:focusable="false"
                     android:clickable="false"/>
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:id="@+id/imageBtn_favorite"
-                    android:padding="5dp"
+                <CheckBox android:id="@+id/imageBtn_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@android:drawable/btn_star"
                     android:layout_marginRight="50dp"
                     android:layout_toRightOf="@id/image_vegnoveg"
                     android:focusable="false"
                     android:clickable="false"/>
 
                  <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:id="@+id/imageBtn_speaker"
                     android:padding="5dp"
                     android:layout_toRightOf="@id/imageBtn_favorite"
