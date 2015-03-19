@@ -11,7 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+//import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -123,11 +124,11 @@ public class NearByRestaurants extends Activity {
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setIcon(R.drawable.ic_drawer_rohit);
         getActionBar().setDisplayUseLogoEnabled(true);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
                 mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,
                 R.string.drawer_open,  /* "open drawer" description for accessibility */
                 R.string.drawer_close  /* "close drawer" description for accessibility */
         ) {
@@ -143,6 +144,7 @@ public class NearByRestaurants extends Activity {
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
 
         // Initilializing the adapter information for restaurant list
@@ -159,32 +161,19 @@ public class NearByRestaurants extends Activity {
 
         showFragment ();
 
-        /*restaurantsList = (ListView)findViewById(R.id.nearby_restaurant_list);
-        // Create a list of all the restaurants.
-        RestaurantListView adapter;
-        // Create an adapter and attach to the restaurant list
-        // Getting adapter by passing xml data ArrayList
-        adapter=new RestaurantListView(this, restaurantlistdetails);
-        restaurantsList.setAdapter(adapter);*/
-
-
         if (savedInstanceState == null) {
             selectItem(0);
         }
 
-        /*list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Toast.makeText(NearByRestaurants.this, "You Clicked at " + web[+position], Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
     public void showFragment() {
-
-        //Currently selected country
-        //mTitle = mCountries[position];
 
         // Initilializing the adapter information for restaurant list
         ArrayList<HashMap<String, String>> restaurantlistdetails = new ArrayList<HashMap<String, String>>();
@@ -210,14 +199,6 @@ public class NearByRestaurants extends Activity {
         FragmentManager fragmentManager = getFragmentManager();
         // Creating a fragment transaction
         fragmentManager.beginTransaction().replace(R.id.content_frame, detail).commit();
-
-       /* restaurantsList = (ListView)findViewById(R.id.nearby_restaurant_list);
-        // Create a list of all the restaurants.
-        RestaurantListView adapter;
-        // Create an adapter and attach to the restaurant list
-        // Getting adapter by passing xml data ArrayList
-        adapter=new RestaurantListView(this, restaurantlistdetails);
-        restaurantsList.setAdapter(adapter);*/
     }
 
     /* The click listner for ListView in the navigation drawer */
@@ -230,31 +211,17 @@ public class NearByRestaurants extends Activity {
 
     // This show which Item is selected in the Navigation Bar.
     private void selectItem(int position) {
-        // update the main content by replacing fragments
-        /*Fragment fragment = new PlanetFragment();
-        Bundle args = new Bundle();
-        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-        fragment.setArguments(args);
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-        // update selected item and title, then close the drawer
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mPlanetTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);*/
 
         if (position == 1) {
 
             Intent settingsintent = new Intent(NearByRestaurants.this, SettingsActivity.class);
             settingsintent.putExtra("key", "Rohit");
             startActivity(settingsintent);
+
             //return;
         }
 
-        // Putting a toaster here
-        //Toast.makeText(NearByRestaurants.this, mNavigationTitles[position], Toast.LENGTH_SHORT).show();
-
+        //mDrawerLayout.closeDrawer(mDrawerList);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -281,6 +248,15 @@ public class NearByRestaurants extends Activity {
 
         // Handle action buttons
         switch(item.getItemId()) {
+
+            case R.id.icon:
+                boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+                if (drawerOpen) {
+                    mDrawerLayout.closeDrawer(mDrawerList);
+                } else  {
+                    mDrawerLayout.openDrawer(mDrawerList);
+                }
+                return true;
 
             case R.id.action_settings:
                 Toast.makeText(NearByRestaurants.this, "You Clicked at ", Toast.LENGTH_SHORT).show();

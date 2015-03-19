@@ -33,7 +33,10 @@ public class RestaurantListViewFragment extends ListFragment {
         // initialize the items list
         mItems = new ArrayList<Rest_ListViewItem_Holder>();
         Resources resources = getResources();
-        
+        // enable ActionBar app icon to behave as action to toggle nav drawer
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
+//        getActionBar().setHomeButtonEnabled(true);
+//        getActionBar().setDisplayUseLogoEnabled(true);
         /*mItems.add(new Rest_ListViewItem_Holder(resources.getDrawable(R.drawable.subway), key_array[0], "Rohit Kumar Malik"));
         mItems.add(new Rest_ListViewItem_Holder(resources.getDrawable(R.drawable.chipotle), key_array[1], "Rohit Kumar Malik"));
         mItems.add(new Rest_ListViewItem_Holder(resources.getDrawable(R.drawable.polotropical), key_array[2], "Rohit Kumar Malik"));

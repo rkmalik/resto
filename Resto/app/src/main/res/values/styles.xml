@@ -4,6 +4,13 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowActionBar">true</item>
+        <item name="actionButtonStyle">@style/MyActionButtonStyle</item>
+
+    </style>
+
+    <style name="MyActionButtonStyle" parent="">
+        <item name="android:minWidth">32dip</item>
+        <item name="android:padding">0dip</item>
     </style>
 
 </resources>
