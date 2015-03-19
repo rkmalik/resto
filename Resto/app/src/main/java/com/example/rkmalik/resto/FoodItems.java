@@ -1,7 +1,9 @@
 package com.example.rkmalik.resto;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -31,6 +33,9 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_items);
+
+        // Show the Up button in the action bar.
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Initialization
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -87,6 +92,11 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if(id == android.R.id.home){
+            NavUtils.navigateUpTo(this, new Intent(this, NearByRestaurants.class));
             return true;
         }
 
