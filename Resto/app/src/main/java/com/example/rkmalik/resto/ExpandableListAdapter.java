@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.HashMap;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 
 
 import com.example.rkmalik.data.Category;
+import com.example.rkmalik.data.FoodItem;
 
 import org.w3c.dom.Text;
 
@@ -35,17 +35,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private HashMap<String, List<String>> _listChildData;
     private HashMap<String, List<Integer>> _listImageIds;
     private HashMap<String, List<String>> _listChildPronun;
-   // private RestoSoundPlayer player;
+    private RestoSoundPlayer player;
 
     public ExpandableListAdapter(Context context, List<Category> _listCategory)
     {
        this._listCategory = _listCategory;
         this._context = context;
-      /*  this._listDataHeader = listDataHeader;
-        this._listChildData = listChildData;
-        this._listImageIds = listImageIds;
-        this._listChildPronun = listChildPronun;
-        player = new RestoSoundPlayer();*/
+        player = new RestoSoundPlayer();
     }
 
     @Override
@@ -110,13 +106,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     }
 
     public String getChildPronun(int grpPos, int childPos){
-        return String.valueOf(this._listCategory.get(grpPos).getFoodItems().get(childPos).getCalories());
+        return String.valueOf(this._listCategory.get(grpPos).getFoodItems().get(childPos).getPhoneticName());
     }
 
     @Override
-    public View getChildView(final int grpPos, final int childPos, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText = (String) getChild(grpPos, childPos);
-        final String childPronun = (String) getChildPronun(grpPos, childPos);
+    public View getChildView(final int grpPos, final int childPos, boolean isLastChild, View convertView, ViewGroup parent)
+    {
+        final FoodItem foodItem = _listCategory.get(grpPos).getFoodItems().get(childPos);
 
         if(convertView == null){
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -124,41 +120,44 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         }
 
         ImageView imgListChild = (ImageView) convertView.findViewById(R.id.imageView);
-        imgListChild.setImageBitmap((Bitmap) getChildImage(grpPos, childPos));
+        imgListChild.setImageBitmap(foodItem.getMainImage());
+
         imgListChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, (String) getChild(grpPos, childPos));
-                detailIntent.putExtra("food item", _listCategory.get(grpPos).getFoodItems().get(childPos));
+                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, foodItem.getName());
+                detailIntent.putExtra("food item", foodItem);
                 _context.startActivity(detailIntent);
             }
         });
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem);
-        txtListChild.setText(childText);
+        txtListChild.setText(foodItem.getName());
         txtListChild.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, (String) getChild(grpPos, childPos));
+                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, foodItem.getName());
+                detailIntent.putExtra("food item", foodItem);
                 _context.startActivity(detailIntent);
             }
         });
 
         TextView txtListPronun = (TextView) convertView.findViewById(R.id.listItemPronun);
-        txtListPronun.setText(childPronun);
+        txtListPronun.setText(foodItem.getPhoneticName());
         txtListPronun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, (String) getChild(grpPos, childPos));
+                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, foodItem.getName());
+                detailIntent.putExtra("food item", foodItem);
                 _context.startActivity(detailIntent);
             }
         });
 
         ImageView imgVegNonVeg = (ImageView) convertView.findViewById(R.id.image_vegnoveg);
-        imgVegNonVeg.setImageResource(R.drawable.no_image);
+        imgVegNonVeg.setImageResource(foodItem.isVeg()?R.drawable.veg_icon:R.drawable.non_veg_icon);
 
         CheckBox imgFavButton = (CheckBox) convertView.findViewById(R.id.imageBtn_favorite);
         imgFavButton.setOnClickListener(new View.OnClickListener() {
@@ -170,14 +169,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         });
 
         ImageView imgSpkButton = (ImageView) convertView.findViewById(R.id.imageBtn_speaker);
-        imgSpkButton.setImageResource(R.drawable.no_image);
+        imgSpkButton.setImageResource(R.drawable.icon_audio);
         imgSpkButton.setClickable(true);
         imgSpkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println("Speaker Clicked");
                 Toast.makeText(_context, "Speaker Clicked", Toast.LENGTH_SHORT);
-               // player.playSound(_context, R.raw.croissant);
+                player.playSound(_context, R.raw.croissant);
             }
         });
         

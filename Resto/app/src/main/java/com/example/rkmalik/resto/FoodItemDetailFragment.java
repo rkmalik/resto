@@ -67,7 +67,7 @@ public class FoodItemDetailFragment extends Fragment{
             ((TextView) rootView.findViewById(R.id.item_name)).setText(foodItem.getName());//.setText(itemName);
             ((TextView) rootView.findViewById(R.id.item_sub_name)).setText("Alias Name");
             ((TextView) rootView.findViewById(R.id.item_pronun)).setText("/pronun /ciation");
-            ((ImageView) rootView.findViewById(R.id.image_vegnonveg_1)).setImageResource(R.drawable.no_image);
+            ((ImageView) rootView.findViewById(R.id.image_vegnonveg_1)).setImageResource(R.drawable.veg_icon);
             CheckBox favButton = ((CheckBox) rootView.findViewById(R.id.imageBtn_favorite_1));
 
             favButton.setOnClickListener(new View.OnClickListener() {

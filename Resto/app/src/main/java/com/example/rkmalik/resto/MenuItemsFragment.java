@@ -56,6 +56,7 @@ public class MenuItemsFragment extends Fragment {
 
        listAdapter = new ExpandableListAdapter(fragActivity, categoryList);
        listView.setAdapter(listAdapter);
+       listView.expandGroup(0);
        return rootView;
     }
 }
