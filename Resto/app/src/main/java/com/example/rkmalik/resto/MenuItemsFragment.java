@@ -37,11 +37,10 @@ public class MenuItemsFragment extends Fragment {
        fragActivity = this.getActivity();
 
         Intent intent = this.getActivity().getIntent();
-        int id = intent.getIntExtra("id", 0);
+        int id = intent.getIntExtra("restId", 0);
 
         DBHelper dbHelper = new DBHelper(this.getActivity().getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
-        System.out.println("rest id is"+String.valueOf(id));
         categoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
 
         for(int i=0; i<categoryList.size(); i++)
@@ -54,7 +53,7 @@ public class MenuItemsFragment extends Fragment {
 
        listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView2);
 
-       listAdapter = new ExpandableListAdapter(fragActivity, categoryList);
+       listAdapter = new ExpandableListAdapter(fragActivity, categoryList, id);
        listView.setAdapter(listAdapter);
        listView.expandGroup(0);
        return rootView;

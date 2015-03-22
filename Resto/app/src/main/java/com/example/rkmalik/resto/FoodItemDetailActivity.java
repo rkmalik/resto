@@ -31,8 +31,17 @@ public class FoodItemDetailActivity extends ActionBarActivity{
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(FoodItemDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(FoodItemDetailFragment.ARG_ITEM_ID));
+      //      arguments.putString(FoodItemDetailFragment.ARG_ITEM_ID,
+        //            getIntent().getStringExtra(FoodItemDetailFragment.ARG_ITEM_ID));
+          //  arguments.putSerializable("food item", getIntent().getSerializableExtra("food item"));
+            int restId = getIntent().getIntExtra("restId", 0);
+            arguments.putInt("restId", restId);
+            arguments.putInt("id", getIntent().getIntExtra("id", 0));
+
+            Intent intent = new Intent();
+            intent.putExtra("restId", restId);
+            setResult(RESULT_OK, intent);
+
             FoodItemDetailFragment fragment = new FoodItemDetailFragment();
             fragment.setArguments(arguments);
               getSupportFragmentManager().beginTransaction()

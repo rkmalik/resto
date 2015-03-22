@@ -44,6 +44,12 @@ public class RestaurantModel {
         return getFoodItemsFromCursor(cursor);
     }
 
+    public static FoodItem getFoodItemDetailsFromId(SQLiteDatabase db, int id)
+    {
+        Cursor cursor = db.rawQuery("SELECT * FROM fooditem WHERE _id="+id+"", null);
+        return getFoodItemsFromCursor(cursor).get(0);
+    }
+
     private static List<FoodItem> getFoodItemsFromCursor(Cursor cursor) {
         cursor.moveToFirst();
         List<FoodItem> foodItems = new ArrayList();
@@ -56,6 +62,8 @@ public class RestaurantModel {
             foodItem.setFav(cursor.getInt(cursor.getColumnIndex("is_fav")) == 1 ? true : false);
             foodItem.setVeg(cursor.getInt(cursor.getColumnIndex("is_veg")) == 1 ? true : false);
             foodItem.setDesc(cursor.getString(cursor.getColumnIndex("desc")));
+            foodItem.setCalories(cursor.getInt(cursor.getColumnIndex("calories")));
+            foodItem.setServingSize(cursor.getString(cursor.getColumnIndex("serving_size")));
             byte[] img = cursor.getBlob(cursor.getColumnIndex("main_image"));
             foodItem.setMainImage(BitmapFactory.decodeByteArray(img, 0, img.length));
             //TODO : Last accessed timestamp

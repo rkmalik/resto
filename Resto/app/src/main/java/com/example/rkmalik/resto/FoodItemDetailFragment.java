@@ -1,6 +1,7 @@
 package com.example.rkmalik.resto;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rkmalik.data.FoodItem;
+import com.example.rkmalik.model.DBHelper;
+import com.example.rkmalik.model.RestaurantModel;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -46,14 +49,21 @@ public class FoodItemDetailFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
+        int id;
+      /*  if (getArguments().containsKey(ARG_ITEM_ID)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             itemName = getArguments().get(ARG_ITEM_ID).toString();
+        }*/
 
-        }
-        foodItem = (FoodItem) getArguments().get("food item");
+        id = (Integer)getArguments().get("id");
+        DBHelper dbHelper = new DBHelper(this.getActivity().getApplicationContext());
+        SQLiteDatabase database = dbHelper.openDatabase();
+        foodItem = RestaurantModel.getFoodItemDetailsFromId(database, id);
+
+       // int restId = (Integer) getArguments().get("restId");
+
     }
 
     @Override
@@ -63,11 +73,11 @@ public class FoodItemDetailFragment extends Fragment{
         final Context context = getActivity();
 
         // Show the dummy content as text in a TextView.
-        if (itemName != null) {
+        if (foodItem != null) {
             ((TextView) rootView.findViewById(R.id.item_name)).setText(foodItem.getName());//.setText(itemName);
-            ((TextView) rootView.findViewById(R.id.item_sub_name)).setText("Alias Name");
-            ((TextView) rootView.findViewById(R.id.item_pronun)).setText("/pronun /ciation");
-            ((ImageView) rootView.findViewById(R.id.image_vegnonveg_1)).setImageResource(R.drawable.veg_icon);
+            ((TextView) rootView.findViewById(R.id.item_sub_name)).setText(foodItem.getLocalName());
+            ((TextView) rootView.findViewById(R.id.item_pronun)).setText(foodItem.getPhoneticName());
+            ((ImageView) rootView.findViewById(R.id.image_vegnonveg_1)).setImageResource(foodItem.isVeg()?R.drawable.veg_icon:R.drawable.non_veg_icon);
             CheckBox favButton = ((CheckBox) rootView.findViewById(R.id.imageBtn_favorite_1));
 
             favButton.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +89,7 @@ public class FoodItemDetailFragment extends Fragment{
             });
 
             ImageView spkrBtn = ((ImageView) rootView.findViewById(R.id.imageBtn_speaker_1));
-            spkrBtn.setImageResource(R.drawable.no_image);
+            spkrBtn.setImageResource(R.drawable.icon_audio);
             spkrBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -88,10 +98,10 @@ public class FoodItemDetailFragment extends Fragment{
                     player.playSound(context, R.raw.croissant);
                 }
             });
-            ((ImageView) rootView.findViewById(R.id.image_item_1)).setImageResource(R.drawable.chipotle);
-            ((ImageView) rootView.findViewById(R.id.image_item_2)).setImageResource(R.drawable.polotropical);
-            ((TextView) rootView.findViewById(R.id.item_nutrition_header)).setText("Nutrition (Serving Size : 1 cup sliced)");
-            ((TextView) rootView.findViewById(R.id.item_nutrition_detail)).setText("1 calories");
+
+            ((ImageView) rootView.findViewById(R.id.image_item_1)).setImageBitmap(foodItem.getMainImage());
+            ((TextView) rootView.findViewById(R.id.item_nutrition_header)).setText(foodItem.getServingSize());
+            ((TextView) rootView.findViewById(R.id.item_nutrition_detail)).setText(String.valueOf(foodItem.getCalories()));
         }
 
         return rootView;

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import org.w3c.dom.Text;
 public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private Context _context;
     private List<Category> _listCategory;
+    private int restId;
 
     //public ExpandableListAdapter(Context context, List<Category> _listCategory){
       //  this._context = context;
@@ -37,10 +39,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private HashMap<String, List<String>> _listChildPronun;
     private RestoSoundPlayer player;
 
-    public ExpandableListAdapter(Context context, List<Category> _listCategory)
+    public ExpandableListAdapter(Context context, List<Category> _listCategory, int restId)
     {
        this._listCategory = _listCategory;
         this._context = context;
+        this.restId = restId;
         player = new RestoSoundPlayer();
     }
 
@@ -126,9 +129,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, foodItem.getName());
-                detailIntent.putExtra("food item", foodItem);
+                detailIntent.putExtra("id", foodItem.getId());
+                detailIntent.putExtra("restId", restId);
                 _context.startActivity(detailIntent);
+
+
+
             }
         });
 
@@ -138,8 +144,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, foodItem.getName());
-                detailIntent.putExtra("food item", foodItem);
+                detailIntent.putExtra("id", foodItem.getId());
+                detailIntent.putExtra("restId", restId);
                 _context.startActivity(detailIntent);
             }
         });
@@ -150,8 +156,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, foodItem.getName());
-                detailIntent.putExtra("food item", foodItem);
+                detailIntent.putExtra("id", foodItem.getId());
+                detailIntent.putExtra("restId", restId);
                 _context.startActivity(detailIntent);
             }
         });

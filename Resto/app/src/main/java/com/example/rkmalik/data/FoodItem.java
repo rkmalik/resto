@@ -1,6 +1,8 @@
 package com.example.rkmalik.data;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.format.Time;
 
 import java.io.Serializable;
@@ -9,7 +11,7 @@ import java.sql.Blob;
 /**
  * Created by vicks on 11/03/15.
  */
-public class FoodItem implements Serializable {
+public class FoodItem implements Parcelable {
     private int id=-1;
     private String name=null;
     private String phoneticName = null;
@@ -117,5 +119,14 @@ public class FoodItem implements Serializable {
 
     public void setServingSize(String servingSize) {
         this.servingSize = servingSize;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
     }
 }
