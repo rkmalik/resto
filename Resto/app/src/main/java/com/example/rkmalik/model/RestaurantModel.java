@@ -35,12 +35,13 @@ public class RestaurantModel {
 
     public static List<FoodItem> getFoodItemsBasedOnCategory(SQLiteDatabase db, int catId) {
         //System.out.println("category id : "+String.valueOf(catId));
-        Cursor cursor = db.rawQuery("SELECT * FROM fooditem WHERE catId=" + catId + "", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM fooditem food,menu menu WHERE catId=" + catId + "", null);
         return getFoodItemsFromCursor(cursor);
     }
 
-    public static List<FoodItem> getFavourites(SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery("SELECT * FROM fooditem WHERE is_fav=1", null);
+    public static List<FoodItem> getFavourites(SQLiteDatabase db, int restId) {
+        //Cursor cursor = db.rawQuery("select fooditem.* from fooditem,menu where fooditem.is_fav=1 and fooditem.catId=menu.category_id and menu.rest_id="+restId+"", null);
+        Cursor cursor = db.rawQuery("select * from fooditem where is_fav=1", null);
         return getFoodItemsFromCursor(cursor);
     }
 

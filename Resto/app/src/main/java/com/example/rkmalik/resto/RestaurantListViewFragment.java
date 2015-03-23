@@ -47,6 +47,7 @@ public class RestaurantListViewFragment extends ListFragment {
 //        dbHelper.onUpgrade(database, 1, 2);
   //      database = dbHelper.openDatabase();
         restaurantListFromDB = RestaurantModel.getRestList(database);
+        database.close();
 
         LocationSettings gps = new LocationSettings(this.getActivity());
         location = gps.getLastLocation();

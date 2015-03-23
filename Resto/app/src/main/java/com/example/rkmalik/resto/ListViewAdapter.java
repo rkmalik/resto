@@ -14,6 +14,7 @@ import android.content.Context;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rkmalik.data.FoodItem;
 import com.example.rkmalik.resto.FavoritesFragment;
 
 /**
@@ -21,15 +22,15 @@ import com.example.rkmalik.resto.FavoritesFragment;
  */
 public class ListViewAdapter implements ListAdapter{
     private Context _context;
-    private List<String> _listData;
-    private List<String> _listPronun;
+    private List<FoodItem> favItems;
     private RestoSoundPlayer player;
+    private int restId;
 
-    public ListViewAdapter(Context context, List<String> listData, List<String> listPronun){
+    public ListViewAdapter(Context context, List<FoodItem> favItems, int restId){
         this._context = context;
-        this._listData = listData;
-        this._listPronun = listPronun;
+        this.favItems = favItems;
         player = new RestoSoundPlayer();
+        this.restId = restId;
     }
 
     @Override
@@ -54,15 +55,15 @@ public class ListViewAdapter implements ListAdapter{
 
     @Override
     public int getCount() {
-        return this._listData.size();
+        return this.favItems.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return this._listData.get(i);
+        return this.favItems.get(i);
     }
 
-    public String getPronun(int i) { return  this._listPronun.get(i); }
+    public String getPronun(int i) { return  this.favItems.get(i).getPhoneticName(); }
 
     @Override
     public long getItemId(int i) {
@@ -76,8 +77,7 @@ public class ListViewAdapter implements ListAdapter{
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        final String dataText = (String) getItem(i);
-        final String pronunText = (String) getPronun(i);
+        final FoodItem foodItem = favItems.get(i);
 
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -85,52 +85,55 @@ public class ListViewAdapter implements ListAdapter{
         }
 
         ImageView imgListChild = (ImageView) convertView.findViewById(R.id.favimageView);
-        imgListChild.setImageResource(R.drawable.chipotle);
+        imgListChild.setImageBitmap(foodItem.getMainImage());
         imgListChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, dataText);
+                detailIntent.putExtra("id", foodItem.getId());
+                detailIntent.putExtra("restId", restId);
                 _context.startActivity(detailIntent);
             }
         });
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem1);
-        txtListChild.setText(dataText);
+        txtListChild.setText(foodItem.getName());
         txtListChild.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, dataText);
+                detailIntent.putExtra("id", foodItem.getId());
+                detailIntent.putExtra("restId", restId);
                 _context.startActivity(detailIntent);
             }
         });
 
         TextView txtListPronun = (TextView) convertView.findViewById(R.id.listItemPronun1);
-        txtListPronun.setText(pronunText);
+        txtListPronun.setText(foodItem.getPhoneticName());
         txtListPronun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra(FoodItemDetailFragment.ARG_ITEM_ID, dataText);
+                detailIntent.putExtra("id", foodItem.getId());
+                detailIntent.putExtra("restId", restId);
                 _context.startActivity(detailIntent);
             }
         });
 
         ImageView imgVegNonVeg = (ImageView) convertView.findViewById(R.id.image_vegnoveg1);
-        imgVegNonVeg.setImageResource(R.drawable.no_image);
+        imgVegNonVeg.setImageResource(foodItem.isVeg()?R.drawable.veg_icon:R.drawable.non_veg_icon);
 
-        /*CheckBox imgFavButton = (CheckBox) convertView.findViewById(R.id.imageBtn_favorite1);
+       /* CheckBox imgFavButton = (CheckBox) convertView.findViewById(R.id.imageBtn_favorite);
         imgFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Favorite Clicked");
+                System.out.println("Favorite Clicked 1");
                 Toast.makeText(_context, "Favorite Clicked", Toast.LENGTH_SHORT);
             }
         });*/
 
         ImageView imgSpkButton = (ImageView) convertView.findViewById(R.id.imageBtn_speaker1);
-        imgSpkButton.setImageResource(R.drawable.no_image);
+        imgSpkButton.setImageResource(R.drawable.icon_audio);
         imgSpkButton.setClickable(true);
         imgSpkButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +159,7 @@ public class ListViewAdapter implements ListAdapter{
 
     @Override
     public boolean isEmpty() {
-        int sz = this._listData.size();
+        int sz = this.favItems.size();
         if(sz > 0){
             return true;
         }

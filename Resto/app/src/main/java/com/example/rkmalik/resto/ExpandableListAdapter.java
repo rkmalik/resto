@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.HashMap;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 
 import com.example.rkmalik.data.Category;
 import com.example.rkmalik.data.FoodItem;
+import com.example.rkmalik.model.DBHelper;
+import com.example.rkmalik.model.RestaurantModel;
 
 import org.w3c.dom.Text;
 
@@ -166,11 +169,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         imgVegNonVeg.setImageResource(foodItem.isVeg()?R.drawable.veg_icon:R.drawable.non_veg_icon);
 
         CheckBox imgFavButton = (CheckBox) convertView.findViewById(R.id.imageBtn_favorite);
+        imgFavButton.setChecked(foodItem.isFav()?true:false);
         imgFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Favorite Clicked");
-                Toast.makeText(_context, "Favorite Clicked", Toast.LENGTH_SHORT);
+                foodItem.setFav(!foodItem.isFav());
+                UpdateFavourites(foodItem);
+                if(foodItem.isFav())
+                    Toast.makeText(_context, "Added to Favorites", Toast.LENGTH_SHORT);
+                else
+                    Toast.makeText(_context, "Removed from Favorites", Toast.LENGTH_SHORT);
             }
         });
 
@@ -192,5 +200,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     @Override
     public boolean isChildSelectable(int i, int i2) {
         return true;
+    }
+
+    private void UpdateFavourites(FoodItem foodItem)
+    {
+        DBHelper dbHelper = new DBHelper(_context.getApplicationContext());
+        SQLiteDatabase database = dbHelper.openDatabase();
+        RestaurantModel.updateIsFavFoodItem(database, foodItem);
+        database.close();
     }
 }

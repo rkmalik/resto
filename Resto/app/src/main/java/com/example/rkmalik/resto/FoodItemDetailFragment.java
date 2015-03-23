@@ -61,6 +61,7 @@ public class FoodItemDetailFragment extends Fragment{
         DBHelper dbHelper = new DBHelper(this.getActivity().getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
         foodItem = RestaurantModel.getFoodItemDetailsFromId(database, id);
+        database.close();
 
        // int restId = (Integer) getArguments().get("restId");
 
@@ -84,7 +85,12 @@ public class FoodItemDetailFragment extends Fragment{
                 @Override
                 public void onClick(View view) {
                     System.out.println("Favorite Clicked");
-                    Toast.makeText(context, "Favorite Clicked", Toast.LENGTH_SHORT);
+                    foodItem.setFav(!foodItem.isFav());
+                    //UpdateFavourites(foodItem);
+                    if(foodItem.isFav())
+                        Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT);
+                    else
+                        Toast.makeText(context, "Removed from Favorites", Toast.LENGTH_SHORT);
                 }
             });
 
@@ -106,4 +112,6 @@ public class FoodItemDetailFragment extends Fragment{
 
         return rootView;
     }
+
+
 }

@@ -49,7 +49,7 @@ public class MenuItemsFragment extends Fragment {
             category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
         }
 
-        dbHelper.close();
+        database.close();
 
        listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView2);
 
