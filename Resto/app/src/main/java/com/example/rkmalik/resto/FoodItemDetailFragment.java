@@ -2,8 +2,11 @@ package com.example.rkmalik.resto;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.AudioManager;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +19,13 @@ import com.example.rkmalik.data.FoodItem;
 import com.example.rkmalik.model.DBHelper;
 import com.example.rkmalik.model.RestaurantModel;
 
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Created by shashankranjan on 3/16/15.
  */
-public class FoodItemDetailFragment extends Fragment{
+public class FoodItemDetailFragment extends Fragment  implements TextToSpeech.OnInitListener{
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -33,7 +37,7 @@ public class FoodItemDetailFragment extends Fragment{
      */
     private String itemName;
     private Context _context;
-    private RestoSoundPlayer player;
+    private TextToSpeech tts;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -42,7 +46,7 @@ public class FoodItemDetailFragment extends Fragment{
     private FoodItem foodItem;
 
     public FoodItemDetailFragment() {
-        player = new RestoSoundPlayer();
+
     }
 
     @Override
@@ -56,6 +60,8 @@ public class FoodItemDetailFragment extends Fragment{
             // to load content from a content provider.
             itemName = getArguments().get(ARG_ITEM_ID).toString();
         }*/
+        _context = this.getActivity();
+        tts = new TextToSpeech(this.getActivity(), this);
 
         id = (Integer)getArguments().get("id");
         DBHelper dbHelper = new DBHelper(this.getActivity().getApplicationContext());
@@ -80,6 +86,7 @@ public class FoodItemDetailFragment extends Fragment{
             ((TextView) rootView.findViewById(R.id.item_pronun)).setText(foodItem.getPhoneticName());
             ((ImageView) rootView.findViewById(R.id.image_vegnonveg_1)).setImageResource(foodItem.isVeg()?R.drawable.veg_icon:R.drawable.non_veg_icon);
             CheckBox favButton = ((CheckBox) rootView.findViewById(R.id.imageBtn_favorite_1));
+            favButton.setChecked(foodItem.isFav()?true:false);
 
             favButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,17 +108,41 @@ public class FoodItemDetailFragment extends Fragment{
                 public void onClick(View view) {
                     System.out.println("Speaker Clicked");
                     Toast.makeText(context, "Speaker Clicked", Toast.LENGTH_SHORT);
-                    player.playSound(context, R.raw.croissant);
+                    speakOut(foodItem.getName());
                 }
             });
 
             ((ImageView) rootView.findViewById(R.id.image_item_1)).setImageBitmap(foodItem.getMainImage());
-            ((TextView) rootView.findViewById(R.id.item_nutrition_header)).setText(foodItem.getServingSize());
-            ((TextView) rootView.findViewById(R.id.item_nutrition_detail)).setText(String.valueOf(foodItem.getCalories()));
+            ((TextView) rootView.findViewById(R.id.item_nutrition_header)).setText("Nutrition");
+            ((TextView) rootView.findViewById(R.id.item_nutrition_detail)).setText(String.valueOf(foodItem.getCalories() + " calories per " + foodItem.getServingSize()));
         }
 
         return rootView;
     }
 
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
 
+            int result = tts.setLanguage(Locale.US);
+
+            // tts.setPitch(5); // set pitch level
+
+            // tts.setSpeechRate(2); // set speech speed rate
+
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "Language is not supported");
+            }
+        } else {
+            Log.e("TTS", "Initilization Failed");
+        }
+    }
+
+    private void speakOut(String text) {
+        AudioManager am = (AudioManager)_context.getSystemService(Context.AUDIO_SERVICE);
+        int amStreamMusicMaxVol = am.getStreamVolume(am.STREAM_VOICE_CALL);
+        am.setStreamVolume(am.STREAM_VOICE_CALL, amStreamMusicMaxVol, 0);
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
 }

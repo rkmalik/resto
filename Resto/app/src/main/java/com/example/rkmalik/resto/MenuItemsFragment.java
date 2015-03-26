@@ -5,6 +5,7 @@ import android.app.ListFragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,14 @@ import java.util.List;
 /**
  * Created by shashankranjan on 3/13/15.
  */
-public class MenuItemsFragment extends Fragment {
+public class MenuItemsFragment extends Fragment{
     ExpandableListAdapter listAdapter;
     ExpandableListView listView;
     List<Category> categoryList;
     Activity fragActivity;
+    DBHelper dbHelper;
+    int id;
+    int openGroupIndex = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,9 +41,9 @@ public class MenuItemsFragment extends Fragment {
        fragActivity = this.getActivity();
 
         Intent intent = this.getActivity().getIntent();
-        int id = intent.getIntExtra("restId", 0);
+        id = intent.getIntExtra("restId", 0);
 
-        DBHelper dbHelper = new DBHelper(this.getActivity().getApplicationContext());
+        dbHelper = new DBHelper(this.getActivity().getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
         categoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
 
@@ -55,7 +59,48 @@ public class MenuItemsFragment extends Fragment {
 
        listAdapter = new ExpandableListAdapter(fragActivity, categoryList, id);
        listView.setAdapter(listAdapter);
-       listView.expandGroup(0);
+       listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
+
+           @Override
+           public void onGroupExpand(int i) {
+               openGroupIndex = i;
+           }
+       });
+
+       listView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener(){
+
+           @Override
+           public void onGroupCollapse(int i) {
+               openGroupIndex = -1;
+           }
+       });
+
+       if(openGroupIndex > -1) {
+           listView.expandGroup(openGroupIndex);
+       }
        return rootView;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        dbHelper = new DBHelper(this.getActivity().getApplicationContext());
+        SQLiteDatabase database = dbHelper.openDatabase();
+        categoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
+
+        for(int i=0; i<categoryList.size(); i++)
+        {
+            Category category = categoryList.get(i);
+            category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
+        }
+
+        database.close();
+        listAdapter = new ExpandableListAdapter(fragActivity, categoryList, id);
+        listView.setAdapter(listAdapter);
+        if(openGroupIndex > -1){
+            listView.expandGroup(openGroupIndex);
+        }
+
     }
 }
