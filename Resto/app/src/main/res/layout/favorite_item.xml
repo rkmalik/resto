@@ -1,23 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="55dip"
-    android:orientation="vertical">
-    <RelativeLayout
-        android:layout_width="fill_parent"
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    > -->
+    <!--<LinearLayout
+    android:id="@+id/back"
+    android:tag="back"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:layout_gravity="center">
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/frame"
+        android:id="@+id/delete_btn"
+        android:text="Delete"/>
+    </LinearLayout> -->
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@color/frame_background"
+        android:padding="5dp"
         android:focusable="false"
-        android:clickable="false">
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/favimageView"
-            android:padding="5dp"
-            android:scaleType="fitXY"
-            android:layout_alignParentLeft="true"
+        android:clickable="false"
+        android:orientation="vertical"
+        android:id="@+id/front"
+        android:tag="front">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/frame"
             android:focusable="false"
-            android:clickable="false"/>
+            android:clickable="false">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/favimageView"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:layout_alignParentLeft="true"
+                android:focusable="false"
+                android:clickable="false"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -35,9 +60,20 @@
                     android:clickable="false"
                     android:textColor="#000000"/>
 
-                <!-- the pronunciation view -->
-                <TextView android:id="@+id/listItemPronun1"
+                <!-- the alias name view -->
+                <TextView android:id="@+id/aliasName1"
                     android:layout_below="@id/lblListItem1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textStyle="bold"
+                    android:focusable="false"
+                    android:clickable="false"
+                    android:textColor="#000000"/>
+
+                <!-- the calorie view -->
+                <TextView android:id="@+id/calorieInfo1"
+                    android:layout_below="@id/aliasName1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@android:style/TextAppearance.Small"
@@ -48,7 +84,7 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/listItemPronun1"
+                    android:layout_below="@id/calorieInfo1"
                     android:focusable="false"
                     android:clickable="false">
 
@@ -61,24 +97,40 @@
                         android:focusable="false"
                         android:clickable="false"/>
 
-                   <!-- <CheckBox android:id="@+id/imageBtn_favorite1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@android:drawable/btn_star"
-                        android:layout_marginRight="50dp"
-                        android:layout_toRightOf="@id/image_vegnoveg1"
-                        android:focusable="false"
-                        android:clickable="false"/> -->
-
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:id="@+id/imageBtn_speaker1"
                         android:padding="5dp"
+                        android:layout_marginRight="50dp"
                         android:layout_toRightOf="@id/image_vegnoveg1"
+                        android:focusable="false"
+                        android:clickable="false"/>
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:id="@+id/imageBtn_delete"
+                        android:padding="5dp"
+                        android:layout_toRightOf="@id/imageBtn_speaker1"
                         android:focusable="false"
                         android:clickable="false"/>
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
-</RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/frame"
+            android:layout_alignParentRight="true">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/frame"
+                android:id="@+id/forwardButton1"
+                android:src="@drawable/ic_action_next_item"
+                android:focusable="false"
+                android:clickable="false"/>
+        </RelativeLayout>
+    </RelativeLayout>
+<!--</FrameLayout> -->

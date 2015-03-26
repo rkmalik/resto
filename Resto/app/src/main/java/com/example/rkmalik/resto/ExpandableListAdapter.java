@@ -2,17 +2,24 @@ package com.example.rkmalik.resto;
 
 import java.util.List;
 import java.util.HashMap;
+import java.util.Locale;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.content.Context;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,26 +35,23 @@ import org.w3c.dom.Text;
 /**
  * Created by shashankranjan on 3/12/15.
  */
-public class ExpandableListAdapter extends BaseExpandableListAdapter{
+public class ExpandableListAdapter extends BaseExpandableListAdapter implements TextToSpeech.OnInitListener{
     private Context _context;
     private List<Category> _listCategory;
     private int restId;
+    private TextToSpeech tts;
 
-    //public ExpandableListAdapter(Context context, List<Category> _listCategory){
-      //  this._context = context;
-        //this._listCategory = _listCategory;
     private List<String> _listDataHeader;
     private HashMap<String, List<String>> _listChildData;
     private HashMap<String, List<Integer>> _listImageIds;
     private HashMap<String, List<String>> _listChildPronun;
-    private RestoSoundPlayer player;
 
     public ExpandableListAdapter(Context context, List<Category> _listCategory, int restId)
     {
        this._listCategory = _listCategory;
         this._context = context;
         this.restId = restId;
-        player = new RestoSoundPlayer();
+        tts = new TextToSpeech(_context, this);
     }
 
     @Override
@@ -153,9 +157,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             }
         });
 
-        TextView txtListPronun = (TextView) convertView.findViewById(R.id.listItemPronun);
-        txtListPronun.setText(foodItem.getPhoneticName());
-        txtListPronun.setOnClickListener(new View.OnClickListener() {
+        TextView txtListAlias = (TextView) convertView.findViewById(R.id.aliasName);
+        txtListAlias.setText(foodItem.getLocalName());
+        txtListAlias.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
+                detailIntent.putExtra("id", foodItem.getId());
+                detailIntent.putExtra("restId", restId);
+                _context.startActivity(detailIntent);
+            }
+        });
+
+        TextView txtListCalorie = (TextView) convertView.findViewById(R.id.calorieInfo);
+        txtListCalorie.setText(foodItem.getCalories() + " calories per " + foodItem.getServingSize());
+        txtListCalorie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
@@ -190,7 +206,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             public void onClick(View view) {
                 System.out.println("Speaker Clicked");
                 Toast.makeText(_context, "Speaker Clicked", Toast.LENGTH_SHORT);
-                player.playSound(_context, R.raw.croissant);
+                speakOut(foodItem.getName());
+            }
+        });
+
+        ImageButton forwardBtn = (ImageButton) convertView.findViewById(R.id.forwardButton);
+        forwardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
+                detailIntent.putExtra("id", foodItem.getId());
+                detailIntent.putExtra("restId", restId);
+                _context.startActivity(detailIntent);
             }
         });
         
@@ -208,5 +235,31 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         SQLiteDatabase database = dbHelper.openDatabase();
         RestaurantModel.updateIsFavFoodItem(database, foodItem);
         database.close();
+    }
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+
+            int result = tts.setLanguage(Locale.US);
+
+            // tts.setPitch(5); // set pitch level
+
+            // tts.setSpeechRate(2); // set speech speed rate
+
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "Language is not supported");
+            }
+        } else {
+            Log.e("TTS", "Initilization Failed");
+        }
+    }
+
+    private void speakOut(String text) {
+        AudioManager am = (AudioManager)_context.getSystemService(Context.AUDIO_SERVICE);
+        int amStreamMusicMaxVol = am.getStreamVolume(am.STREAM_VOICE_CALL);
+        am.setStreamVolume(am.STREAM_VOICE_CALL, amStreamMusicMaxVol, 0);
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 }

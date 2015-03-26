@@ -35,7 +35,7 @@ public class RestaurantModel {
 
     public static List<FoodItem> getFoodItemsBasedOnCategory(SQLiteDatabase db, int catId) {
         //System.out.println("category id : "+String.valueOf(catId));
-        Cursor cursor = db.rawQuery("SELECT * FROM fooditem food,menu menu WHERE catId=" + catId + "", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM fooditem WHERE catId=" + catId + "", null);
         return getFoodItemsFromCursor(cursor);
     }
 

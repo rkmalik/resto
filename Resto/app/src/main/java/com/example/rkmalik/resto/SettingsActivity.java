@@ -16,7 +16,7 @@ public class SettingsActivity extends Activity{
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setIcon(R.drawable.ic_drawer_rohit);
+        getActionBar().setIcon(R.drawable.ic_drawer);
         getActionBar().setDisplayUseLogoEnabled(true);
 
     }

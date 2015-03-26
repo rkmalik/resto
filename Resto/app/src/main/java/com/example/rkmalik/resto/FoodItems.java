@@ -1,14 +1,17 @@
 package com.example.rkmalik.resto;
 
 import android.content.Intent;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,14 +20,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.os.Build;
 
+import java.util.Locale;
+
 import static android.support.v7.app.ActionBar.NAVIGATION_MODE_TABS;
 
 
-public class FoodItems extends ActionBarActivity implements ActionBar.TabListener, android.app.ActionBar.TabListener {
+public class FoodItems extends ActionBarActivity implements ActionBar.TabListener, android.app.ActionBar.TabListener{
 
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
+    private TextToSpeech tts;
 
     //Tab titles
     private String[] tabs = {"Menu", "Favorites"};
@@ -56,6 +62,14 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
+                if(position == 1) //fav frag pos
+                {
+                    FavoritesFragment favoritesFragment = (FavoritesFragment) mAdapter.instantiateItem(viewPager, position);
+                    favoritesFragment.onResume();
+                } else {
+                    MenuItemsFragment menuItemsFragment = (MenuItemsFragment) mAdapter.instantiateItem(viewPager, 0);
+                    menuItemsFragment.onResume();
+                }
             }
 
             @Override
