@@ -156,8 +156,6 @@ public class ListViewAdapter extends ArrayAdapter<FoodItem> implements ListAdapt
         imgSpkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Speaker Clicked");
-                Toast.makeText(_context, "Speaker Clicked", Toast.LENGTH_SHORT);
                 speakOut(foodItem.getName());
             }
         });
@@ -176,6 +174,7 @@ public class ListViewAdapter extends ArrayAdapter<FoodItem> implements ListAdapt
                 RestaurantModel.updateIsFavFoodItem(database, foodItem);
                 database.close();
                 favItems.remove(i);
+                Toast.makeText(_context, foodItem.getName() + " is removed from favorites", Toast.LENGTH_SHORT).show();
                 fragment.onResume();
             }
         });

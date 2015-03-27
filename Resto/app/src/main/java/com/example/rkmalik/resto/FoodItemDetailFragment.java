@@ -95,9 +95,9 @@ public class FoodItemDetailFragment extends Fragment  implements TextToSpeech.On
                     foodItem.setFav(!foodItem.isFav());
                     //UpdateFavourites(foodItem);
                     if(foodItem.isFav())
-                        Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT);
+                        Toast.makeText(_context, foodItem.getName() + " is added to favorites", Toast.LENGTH_SHORT).show();
                     else
-                        Toast.makeText(context, "Removed from Favorites", Toast.LENGTH_SHORT);
+                        Toast.makeText(_context, foodItem.getName() + " is removed from favorites", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -106,8 +106,6 @@ public class FoodItemDetailFragment extends Fragment  implements TextToSpeech.On
             spkrBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("Speaker Clicked");
-                    Toast.makeText(context, "Speaker Clicked", Toast.LENGTH_SHORT);
                     speakOut(foodItem.getName());
                 }
             });

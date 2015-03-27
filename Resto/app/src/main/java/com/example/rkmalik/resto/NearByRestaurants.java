@@ -225,6 +225,8 @@ public class NearByRestaurants extends Activity {
             startActivity(settingsintent);
 
             //return;
+        } else if(position != 0) {
+            Toast.makeText(this, "This functionality is not currently supported.", Toast.LENGTH_SHORT).show();
         }
 
         //mDrawerLayout.closeDrawer(mDrawerList);

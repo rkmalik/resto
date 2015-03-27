@@ -192,9 +192,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter implements 
                 foodItem.setFav(!foodItem.isFav());
                 UpdateFavourites(foodItem);
                 if(foodItem.isFav())
-                    Toast.makeText(_context, "Added to Favorites", Toast.LENGTH_SHORT);
+                    Toast.makeText(_context, foodItem.getName() + " is added to favorites", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(_context, "Removed from Favorites", Toast.LENGTH_SHORT);
+                    Toast.makeText(_context, foodItem.getName() + " is removed from favorites", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -204,8 +204,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter implements 
         imgSpkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Speaker Clicked");
-                Toast.makeText(_context, "Speaker Clicked", Toast.LENGTH_SHORT);
                 speakOut(foodItem.getName());
             }
         });
