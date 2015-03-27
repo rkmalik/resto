@@ -44,7 +44,7 @@ public class RestaurantListViewFragment extends ListFragment {
 
         DBHelper dbHelper = new DBHelper(this.getActivity().getApplicationContext());
         //database = dbHelper.openDatabase();
-        dbHelper.onUpgrade(database, 2,3);
+       // dbHelper.onUpgrade(database, 3,4);
         database = dbHelper.openDatabase();
         restaurantListFromDB = RestaurantModel.getRestList(database);
         database.close();
@@ -104,7 +104,7 @@ public class RestaurantListViewFragment extends ListFragment {
             List<String> nearByRestFromGoogle = new ArrayList<>();
             if(temp != null)
             {
-                nearByRestFromGoogle = parseGooglePlacesResults(temp);
+              /*  nearByRestFromGoogle = parseGooglePlacesResults(temp);
 
                 for(int i=0; i<nearByRestFromGoogle.size(); i++)
                 {
@@ -114,7 +114,7 @@ public class RestaurantListViewFragment extends ListFragment {
                             finalRestList.add(restaurantListFromDB.get(j));
 
                     }
-                }
+                } */
 
                 setListAdapter(new RestaurantListAdapter(getActivity(), restaurantListFromDB));
             }

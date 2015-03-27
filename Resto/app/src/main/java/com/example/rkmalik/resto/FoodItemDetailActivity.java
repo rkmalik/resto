@@ -39,6 +39,8 @@ public class FoodItemDetailActivity extends ActionBarActivity{
             intent.putExtra("restId", restId);
             setResult(RESULT_OK, intent);
 
+            setTitle("Subway");
+
             FoodItemDetailFragment fragment = new FoodItemDetailFragment();
             fragment.setArguments(arguments);
               getSupportFragmentManager().beginTransaction()

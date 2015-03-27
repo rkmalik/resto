@@ -1,7 +1,6 @@
 package com.example.rkmalik.resto;
 
 import android.content.Intent;
-import android.speech.tts.TextToSpeech;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
@@ -30,7 +29,6 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
-    private TextToSpeech tts;
 
     //Tab titles
     private String[] tabs = {"Menu", "Favorites"};
@@ -51,6 +49,8 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
         viewPager.setAdapter(mAdapter);
         actionBar.setHomeButtonEnabled(false); //requires API 14
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS); //requires API 11
+
+        setTitle("Subway");
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener(){
 

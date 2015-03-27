@@ -218,14 +218,18 @@ public class NearByRestaurants extends Activity {
     // This show which Item is selected in the Navigation Bar.
     private void selectItem(int position) {
 
-        if (position == 1) {
+        if(position != 0) {
+            Toast.makeText(this, "This functionality is not currently supported.", Toast.LENGTH_SHORT).show();
+        }
+
+        /*if (position == 1) {
 
             Intent settingsintent = new Intent(NearByRestaurants.this, SettingsActivity.class);
             settingsintent.putExtra("key", "Rohit");
             startActivity(settingsintent);
 
             //return;
-        }
+        }*/
 
         //mDrawerLayout.closeDrawer(mDrawerList);
     }

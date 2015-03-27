@@ -176,6 +176,7 @@ public class ListViewAdapter extends ArrayAdapter<FoodItem> implements ListAdapt
                 RestaurantModel.updateIsFavFoodItem(database, foodItem);
                 database.close();
                 favItems.remove(i);
+                Toast.makeText(_context, foodItem.getName() + " is removed from favorites", Toast.LENGTH_SHORT).show();
                 fragment.onResume();
             }
         });
