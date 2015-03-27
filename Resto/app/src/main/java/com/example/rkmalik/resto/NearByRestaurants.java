@@ -198,6 +198,7 @@ public class NearByRestaurants extends Activity {
         detail = new RestaurantListViewFragment ();
          // Creating a Bundle object
         Bundle data = new Bundle();
+
         data.putSerializable("data", restaurantlistdetails);
         // Setting the position to the fragment
         detail.setArguments(data);

@@ -32,6 +32,8 @@ public class FoodItemDetailActivity extends ActionBarActivity{
             // using a fragment transaction.
             Bundle arguments = new Bundle();
             int restId = getIntent().getIntExtra("restId", 0);
+
+            String restName = getIntent().getStringExtra("restName");
             arguments.putInt("restId", restId);
             arguments.putInt("id", getIntent().getIntExtra("id", 0));
 
@@ -39,7 +41,7 @@ public class FoodItemDetailActivity extends ActionBarActivity{
             intent.putExtra("restId", restId);
             setResult(RESULT_OK, intent);
 
-            setTitle("Subway");
+            setTitle(restName);
 
             FoodItemDetailFragment fragment = new FoodItemDetailFragment();
             fragment.setArguments(arguments);

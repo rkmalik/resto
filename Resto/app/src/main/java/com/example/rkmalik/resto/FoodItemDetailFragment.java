@@ -111,8 +111,14 @@ public class FoodItemDetailFragment extends Fragment  implements TextToSpeech.On
             });
 
             ((ImageView) rootView.findViewById(R.id.image_item_1)).setImageBitmap(foodItem.getMainImage());
-            ((TextView) rootView.findViewById(R.id.item_nutrition_header)).setText("Nutrition");
-            ((TextView) rootView.findViewById(R.id.item_nutrition_detail)).setText(String.valueOf(foodItem.getCalories() + " calories per " + foodItem.getServingSize()));
+            if(foodItem.getServingSize()!=null)
+            {
+                ((TextView) rootView.findViewById(R.id.item_nutrition_header)).setText("Nutrition");
+                ((TextView) rootView.findViewById(R.id.item_nutrition_detail)).setText(String.valueOf(foodItem.getCalories() + " calories per " + foodItem.getServingSize()));
+            }
+
+            if(foodItem.getDesc()!=null)
+                ((TextView) rootView.findViewById(R.id.item_description)).setText(foodItem.getDesc());
         }
 
         return rootView;
@@ -142,5 +148,17 @@ public class FoodItemDetailFragment extends Fragment  implements TextToSpeech.On
         int amStreamMusicMaxVol = am.getStreamVolume(am.STREAM_VOICE_CALL);
         am.setStreamVolume(am.STREAM_VOICE_CALL, amStreamMusicMaxVol, 0);
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        if(tts != null) {
+
+            tts.stop();
+            tts.shutdown();
+            Log.d("TTS", "TTS Destroyed");
+        }
+        super.onDestroy();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.rkmalik.resto;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -73,7 +74,9 @@ public class RestaurantListViewFragment extends ListFragment {
         Restaurant selectedRestaurant = restaurantListFromDB.get(position);
         //Bundle data;
         //data.pu
-        
+
+        Activity activity = getActivity();
+        //activity.setTitle("Sub");
         // do something
        // Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
         Intent foodItemsIntent = new Intent(getActivity(), FoodItems.class);

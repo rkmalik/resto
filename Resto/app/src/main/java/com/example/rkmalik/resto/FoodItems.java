@@ -50,7 +50,11 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
         actionBar.setHomeButtonEnabled(false); //requires API 14
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS); //requires API 11
 
-        setTitle("Subway");
+        //String restName = savedInstanceState.get("restName").toString();
+
+        //setTitle("Restaurant");
+
+      //  getActionBar().setTitle();
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener(){
 

@@ -46,12 +46,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter implements 
     private HashMap<String, List<Integer>> _listImageIds;
     private HashMap<String, List<String>> _listChildPronun;
 
-    public ExpandableListAdapter(Context context, List<Category> _listCategory, int restId)
+    public ExpandableListAdapter(Context context, List<Category> _listCategory, int restId, TextToSpeech tts)
     {
        this._listCategory = _listCategory;
         this._context = context;
         this.restId = restId;
-        tts = new TextToSpeech(_context, this);
+        this.tts = tts;
     }
 
     @Override
@@ -169,17 +169,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter implements 
             }
         });
 
-        TextView txtListCalorie = (TextView) convertView.findViewById(R.id.calorieInfo);
-        txtListCalorie.setText(foodItem.getCalories() + " calories per " + foodItem.getServingSize());
-        txtListCalorie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra("id", foodItem.getId());
-                detailIntent.putExtra("restId", restId);
-                _context.startActivity(detailIntent);
-            }
-        });
+        if(foodItem.getServingSize()!=null)
+        {
+            TextView txtListCalorie = (TextView) convertView.findViewById(R.id.calorieInfo);
+            txtListCalorie.setText(foodItem.getCalories() + " calories per " + foodItem.getServingSize());
+            txtListCalorie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
+                    detailIntent.putExtra("id", foodItem.getId());
+                    detailIntent.putExtra("restId", restId);
+                    _context.startActivity(detailIntent);
+                }
+            });
+        }
+
 
         ImageView imgVegNonVeg = (ImageView) convertView.findViewById(R.id.image_vegnoveg);
         imgVegNonVeg.setImageResource(foodItem.isVeg()?R.drawable.veg_icon:R.drawable.non_veg_icon);
@@ -261,4 +265,5 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter implements 
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
 
     }
+
 }
