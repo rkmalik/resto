@@ -43,9 +43,9 @@ public class RestaurantListViewFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         DBHelper dbHelper = new DBHelper(this.getActivity().getApplicationContext());
+        //database = dbHelper.openDatabase();
+        dbHelper.onUpgrade(database, 2,3);
         database = dbHelper.openDatabase();
-//        dbHelper.onUpgrade(database, 1, 2);
-  //      database = dbHelper.openDatabase();
         restaurantListFromDB = RestaurantModel.getRestList(database);
         database.close();
 
