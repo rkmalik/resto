@@ -21,12 +21,14 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
                 return new MenuItemsFragment();
             case 1:
                 return new FavoritesFragment();
+            case 2:
+                return new MyOrdersFragment();
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }

@@ -159,8 +159,6 @@ public class ListViewAdapter extends ArrayAdapter<FoodItem> implements ListAdapt
         imgSpkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Speaker Clicked");
-                Toast.makeText(_context, "Speaker Clicked", Toast.LENGTH_SHORT);
                 speakOut(foodItem.getName());
             }
         });
