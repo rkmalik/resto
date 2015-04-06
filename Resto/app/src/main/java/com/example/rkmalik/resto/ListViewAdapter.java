@@ -40,14 +40,14 @@ public class ListViewAdapter extends ArrayAdapter<FoodItem> implements ListAdapt
     private Fragment fragment;
     private TextToSpeech tts;
 
-    public ListViewAdapter(Context context, int restId, List<FoodItem> favItems, Fragment fragment){
+    public ListViewAdapter(Context context, int restId, List<FoodItem> favItems, Fragment fragment, TextToSpeech tts){
         super(context, restId, favItems);
         this._context = context;
         this.favItems = favItems;
         //player = new RestoSoundPlayer();
         this.restId = restId;
         this.fragment = fragment;
-        tts = new TextToSpeech(context, this);
+        this.tts = tts;
     }
 
     @Override
@@ -135,17 +135,20 @@ public class ListViewAdapter extends ArrayAdapter<FoodItem> implements ListAdapt
             }
         });
 
-        TextView txtListCalorie = (TextView) convertView.findViewById(R.id.calorieInfo1);
-        txtListCalorie.setText(foodItem.getCalories() + " calories per " + foodItem.getServingSize());
-        txtListCalorie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
-                detailIntent.putExtra("id", foodItem.getId());
-                detailIntent.putExtra("restId", restId);
-                _context.startActivity(detailIntent);
-            }
-        });
+        if(foodItem.getServingSize()!=null)
+        {
+            TextView txtListCalorie = (TextView) convertView.findViewById(R.id.calorieInfo1);
+            txtListCalorie.setText(foodItem.getCalories() + " calories per " + foodItem.getServingSize());
+            txtListCalorie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
+                    detailIntent.putExtra("id", foodItem.getId());
+                    detailIntent.putExtra("restId", restId);
+                    _context.startActivity(detailIntent);
+                }
+            });
+        }
 
         ImageView imgVegNonVeg = (ImageView) convertView.findViewById(R.id.image_vegnoveg1);
         imgVegNonVeg.setImageResource(foodItem.isVeg()?R.drawable.veg_icon:R.drawable.non_veg_icon);
@@ -237,4 +240,5 @@ public class ListViewAdapter extends ArrayAdapter<FoodItem> implements ListAdapt
         am.setStreamVolume(am.STREAM_VOICE_CALL, amStreamMusicMaxVol, 0);
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
+
 }

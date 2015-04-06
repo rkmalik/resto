@@ -100,6 +100,7 @@
                 android:clickable="false"/>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/nutrition_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -122,6 +123,21 @@
                 android:clickable="false"
                 android:layout_below="@+id/item_nutrition_header"
                 android:textColor="#000000"/>
+
+
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_below="@id/nutrition_container">
+            <TextView android:id="@+id/item_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:focusable="false"
+                android:clickable="false"
+                android:textColor="#000000"/>
+            </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.rkmalik.resto;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -43,9 +44,9 @@ public class RestaurantListViewFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         DBHelper dbHelper = new DBHelper(this.getActivity().getApplicationContext());
+        //database = dbHelper.openDatabase();
+       // dbHelper.onUpgrade(database, 3,4);
         database = dbHelper.openDatabase();
-//        dbHelper.onUpgrade(database, 1, 2);
-  //      database = dbHelper.openDatabase();
         restaurantListFromDB = RestaurantModel.getRestList(database);
         database.close();
 
@@ -73,7 +74,9 @@ public class RestaurantListViewFragment extends ListFragment {
         Restaurant selectedRestaurant = restaurantListFromDB.get(position);
         //Bundle data;
         //data.pu
-        
+
+        Activity activity = getActivity();
+        //activity.setTitle("Sub");
         // do something
        // Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
         Intent foodItemsIntent = new Intent(getActivity(), FoodItems.class);
@@ -104,7 +107,7 @@ public class RestaurantListViewFragment extends ListFragment {
             List<String> nearByRestFromGoogle = new ArrayList<>();
             if(temp != null)
             {
-                nearByRestFromGoogle = parseGooglePlacesResults(temp);
+              /*  nearByRestFromGoogle = parseGooglePlacesResults(temp);
 
                 for(int i=0; i<nearByRestFromGoogle.size(); i++)
                 {
@@ -114,7 +117,7 @@ public class RestaurantListViewFragment extends ListFragment {
                             finalRestList.add(restaurantListFromDB.get(j));
 
                     }
-                }
+                } */
 
                 setListAdapter(new RestaurantListAdapter(getActivity(), restaurantListFromDB));
             }

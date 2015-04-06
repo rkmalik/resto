@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +23,12 @@ import com.example.rkmalik.model.RestaurantModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by shashankranjan on 3/13/15.
  */
-public class MenuItemsFragment extends Fragment{
+public class MenuItemsFragment extends Fragment  implements TextToSpeech.OnInitListener{
     ExpandableListAdapter listAdapter;
     ExpandableListView listView;
     List<Category> categoryList;
@@ -33,6 +36,7 @@ public class MenuItemsFragment extends Fragment{
     DBHelper dbHelper;
     int id;
     int openGroupIndex = 0;
+    private TextToSpeech tts;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,9 +59,11 @@ public class MenuItemsFragment extends Fragment{
 
         database.close();
 
+        tts = new TextToSpeech(this.getActivity(), this);
+
        listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView2);
 
-       listAdapter = new ExpandableListAdapter(fragActivity, categoryList, id);
+       listAdapter = new ExpandableListAdapter(fragActivity, categoryList, id, tts);
        listView.setAdapter(listAdapter);
        listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
 
@@ -82,6 +88,25 @@ public class MenuItemsFragment extends Fragment{
     }
 
     @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+
+            int result = tts.setLanguage(Locale.US);
+
+            // tts.setPitch(5); // set pitch level
+
+            // tts.setSpeechRate(2); // set speech speed rate
+
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "Language is not supported");
+            }
+        } else {
+            Log.e("TTS", "Initilization Failed");
+        }
+    }
+
+    @Override
     public void onResume()
     {
         super.onResume();
@@ -96,11 +121,23 @@ public class MenuItemsFragment extends Fragment{
         }
 
         database.close();
-        listAdapter = new ExpandableListAdapter(fragActivity, categoryList, id);
+        listAdapter = new ExpandableListAdapter(fragActivity, categoryList, id, tts);
         listView.setAdapter(listAdapter);
         if(openGroupIndex > -1){
             listView.expandGroup(openGroupIndex);
         }
 
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        if(tts != null) {
+
+            tts.stop();
+            tts.shutdown();
+            Log.d("TTS", "TTS Destroyed");
+        }
+        super.onDestroy();
     }
 }
