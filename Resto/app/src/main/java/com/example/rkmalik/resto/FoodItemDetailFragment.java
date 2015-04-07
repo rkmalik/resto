@@ -93,7 +93,7 @@ public class FoodItemDetailFragment extends Fragment  implements TextToSpeech.On
                 public void onClick(View view) {
                     System.out.println("Favorite Clicked");
                     foodItem.setFav(!foodItem.isFav());
-                    //UpdateFavourites(foodItem);
+                    UpdateFavourites(foodItem);
                     if(foodItem.isFav())
                         Toast.makeText(_context, foodItem.getName() + " is added to favorites", Toast.LENGTH_SHORT).show();
                     else
@@ -160,5 +160,13 @@ public class FoodItemDetailFragment extends Fragment  implements TextToSpeech.On
             Log.d("TTS", "TTS Destroyed");
         }
         super.onDestroy();
+    }
+
+    private void UpdateFavourites(FoodItem foodItem)
+    {
+        DBHelper dbHelper = new DBHelper(_context.getApplicationContext());
+        SQLiteDatabase database = dbHelper.openDatabase();
+        RestaurantModel.updateIsFavFoodItem(database, foodItem);
+        database.close();
     }
 }
