@@ -99,7 +99,7 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View view) {
                     Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
-                    step2Intent.putExtra("id", foodItem.getId());
+                    step2Intent.putExtra("name", foodItem.getName());
                     step2Intent.putExtra("restId", _restId);
                     _context.startActivity(step2Intent);
 
@@ -112,7 +112,7 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View view) {
                     Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
-                    step2Intent.putExtra("id", foodItem.getId());
+                    step2Intent.putExtra("name", foodItem.getName());
                     step2Intent.putExtra("restId", _restId);
                     _context.startActivity(step2Intent);
                 }
@@ -124,7 +124,7 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View view) {
                     Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
-                    step2Intent.putExtra("id", foodItem.getId());
+                    step2Intent.putExtra("name", foodItem.getName());
                     step2Intent.putExtra("restId", _restId);
                     _context.startActivity(step2Intent);
                 }
@@ -139,7 +139,7 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View view) {
                     Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
-                    step2Intent.putExtra("id", foodItem.getId());
+                    step2Intent.putExtra("name", foodItem.getName());
                     step2Intent.putExtra("restId", _restId);
                     _context.startActivity(step2Intent);
                 }

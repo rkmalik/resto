@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.rkmalik.data.Category;
 import com.example.rkmalik.data.FoodItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,15 +30,15 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
     private Context _context;
     private List<Category> _orderCategory;
     private int _restId;
-    private int _collectionId;
     private TextToSpeech _tts;
+    List<FoodItem> ingredients;
 
-    BuildOrderPageTwoAdapter(Context context, List<Category> orderCategory, int restId, int collectionId, TextToSpeech tts){
+    BuildOrderPageTwoAdapter(Context context, List<Category> orderCategory, int restId, TextToSpeech tts){
         _context = context;
         _orderCategory = orderCategory;
         _restId = restId;
-        _collectionId = collectionId;
         _tts = tts;
+        ingredients = new ArrayList<FoodItem>();
     }
 
     @Override
@@ -164,10 +165,13 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
             imgFavButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(imgFavButton.isChecked())
-                        Toast.makeText(_context, foodItem.getName() + " is added", Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(_context, foodItem.getName() + " is removed", Toast.LENGTH_SHORT).show();
+                    if(imgFavButton.isChecked()) {
+                        Toast.makeText(_context, foodItem.getName() + " is added to the order", Toast.LENGTH_SHORT).show();
+                        ingredients.add(foodItem);
+                    } else {
+                        Toast.makeText(_context, foodItem.getName() + " is removed from the order", Toast.LENGTH_SHORT).show();
+                        ingredients.remove(foodItem);
+                    }
                 }
             });
 
@@ -218,5 +222,9 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
         am.setStreamVolume(am.STREAM_VOICE_CALL, amStreamMusicMaxVol, 0);
         _tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
 
+    }
+
+    public List<FoodItem> getIngredientsList(){
+        return ingredients;
     }
 }
