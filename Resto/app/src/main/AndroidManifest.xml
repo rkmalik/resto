@@ -8,7 +8,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-	    android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
         <meta-data
             android:name="DATABASE"
             android:value="restoDB" />
@@ -21,11 +21,13 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.example.rkmalik.resto" />
+
         <activity
             android:name=".NearByRestaurants"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,7 +35,7 @@
             android:name=".FoodItems"
             android:label="@string/app_name"
             android:parentActivityName=".NearByRestaurants"
-            android:theme="@style/Theme.AppCompat">
+            android:theme="@style/Theme.AppCompat" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.rkmalik.resto.NearByRestaurants" />
@@ -42,14 +44,30 @@
             android:name=".FoodItemDetailActivity"
             android:label="@string/app_name"
             android:parentActivityName=".FoodItems"
+            android:theme="@style/Theme.AppCompat" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.rkmalik.resto.FoodItems" />
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".BuildOrderPage"
+            android:label="Build Order - Step 1"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.rkmalik.resto.FoodItems" />
-	    </activity>
+        </activity>
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" >
+            android:name=".BuildOrderPageTwo"
+            android:label="Build Order - Step 2"
+            android:theme="@style/Theme.AppCompat">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.rkmalik.resto.BuildOrderPage" />
         </activity>
     </application>
 
