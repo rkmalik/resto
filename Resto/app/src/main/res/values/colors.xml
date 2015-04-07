@@ -4,6 +4,6 @@
     <color name="frame_solid">#eee</color>
     <color name="frame_background">#bcbcbc</color>
     <color name="heading_font_color">#000000</color>
-    <color name="sub_heading_font_color">#000000</color>
+    <color name="sub_heading_font_color">#222222</color>
     <color name="detail_font_color">#000000</color>
 </resources>

@@ -1,23 +1,18 @@
 package com.example.rkmalik.resto;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.os.Build;
 
 import java.util.Locale;
 
@@ -31,7 +26,7 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
     private ActionBar actionBar;
 
     //Tab titles
-    private String[] tabs = {"Menu", "Favorites"};
+    private String[] tabs = {"Menu", "Favorites", "My Orders"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +65,12 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
                 {
                     FavoritesFragment favoritesFragment = (FavoritesFragment) mAdapter.instantiateItem(viewPager, position);
                     favoritesFragment.onResume();
-                } else {
-                    MenuItemsFragment menuItemsFragment = (MenuItemsFragment) mAdapter.instantiateItem(viewPager, 0);
+                } else if(position == 0) {
+                    MenuItemsFragment menuItemsFragment = (MenuItemsFragment) mAdapter.instantiateItem(viewPager, position);
                     menuItemsFragment.onResume();
+                } else {
+                    MyOrdersFragment ordersFragment = (MyOrdersFragment) mAdapter.instantiateItem(viewPager, position);
+                    ordersFragment.onResume();
                 }
             }
 

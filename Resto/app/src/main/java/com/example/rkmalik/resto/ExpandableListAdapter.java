@@ -41,11 +41,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter implements 
     private int restId;
     private TextToSpeech tts;
 
-    private List<String> _listDataHeader;
-    private HashMap<String, List<String>> _listChildData;
-    private HashMap<String, List<Integer>> _listImageIds;
-    private HashMap<String, List<String>> _listChildPronun;
-
     public ExpandableListAdapter(Context context, List<Category> _listCategory, int restId, TextToSpeech tts)
     {
        this._listCategory = _listCategory;
