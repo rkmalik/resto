@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 
 import com.example.rkmalik.data.Category;
 import com.example.rkmalik.data.FoodItem;
+import com.example.rkmalik.data.Order;
 import com.example.rkmalik.data.Restaurant;
 
 import java.util.ArrayList;
@@ -51,6 +52,12 @@ public class RestaurantModel {
         return getFoodItemsFromCursor(cursor).get(0);
     }
 
+    private static List<FoodItem> getFoodItems(SQLiteDatabase db, String ids)
+    {
+        Cursor cursor = db.rawQuery("SELECT * FROM fooditem WHERE _id in "+ids+"", null);
+        return getFoodItemsFromCursor(cursor);
+    }
+
     private static List<FoodItem> getFoodItemsFromCursor(Cursor cursor) {
         cursor.moveToFirst();
         List<FoodItem> foodItems = new ArrayList();
@@ -81,6 +88,56 @@ public class RestaurantModel {
 
     public static List<Category> getCategoriesBasedOnRestaurant(SQLiteDatabase db, int restId) {
         Cursor cursor = db.rawQuery("SELECT * FROM menu WHERE rest_id=" + restId + " ORDER BY display_order", null);
+        cursor.moveToFirst();
+        List<Category> categories = new ArrayList();
+        while (cursor.isAfterLast() == false) {
+            Category category = new Category();
+            category.setId(cursor.getInt(cursor.getColumnIndex("category_id")));
+            category.setName(cursor.getString(cursor.getColumnIndex("category_name")));
+            categories.add(category);
+            cursor.moveToNext();
+        }
+        return categories;
+    }
+
+    public static List<Order> getOrdersForRestaurant(SQLiteDatabase db, int restId)
+    {
+        Cursor cursor = db.rawQuery("SELECT * FROM ORDER WHERE rest_id="+restId, null);
+        cursor.moveToFirst();
+        List<Order> orders = new ArrayList();
+        while(cursor.isAfterLast() == false)
+        {
+            Order order = new Order();
+            order.setId((cursor.getInt(cursor.getColumnIndex("_id"))));
+            order.setName(cursor.getString(cursor.getColumnIndex("name")));
+            String ingredients = cursor.getString((cursor.getColumnIndex("ingredients")));
+            order.setIngredients(getFoodItems(db, ingredients));
+            orders.add(order);
+        }
+        return orders;
+    }
+
+    public static void addOrder(SQLiteDatabase db, Order order)
+    {
+        List<FoodItem> foodItems = order.getIngredients();
+        String ingredients="";
+        for(int i=0; i<foodItems.size(); i++)
+        {
+            ingredients += (String.valueOf(foodItems.get(i).getId())+",");
+        }
+        int length = ingredients.length();
+        ingredients = ingredients.substring(0, length-1);
+        db.execSQL("INSERT INTO ORDER (name, rest_id, ingredients) VALUES ("+order.getName()+","+order.getRestId()+","+ingredients+")");
+    }
+
+    public static void removeOrder(SQLiteDatabase db, int id)
+    {
+        db.execSQL("DELETE FROM ORDER WHERE _id="+id+"");
+    }
+
+    public static List<Category> getCategory(SQLiteDatabase db, int restId, boolean isCollection)
+    {
+        Cursor cursor = db.rawQuery("SELECT * FROM menu WHERE rest_id="+restId+" AND is_collection="+(isCollection?1:0)+"",null);
         cursor.moveToFirst();
         List<Category> categories = new ArrayList();
         while (cursor.isAfterLast() == false) {
