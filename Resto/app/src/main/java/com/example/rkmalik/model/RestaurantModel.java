@@ -102,7 +102,7 @@ public class RestaurantModel {
 
     public static List<Order> getOrdersForRestaurant(SQLiteDatabase db, int restId)
     {
-        Cursor cursor = db.rawQuery("SELECT * FROM order WHERE rest_id="+restId+"", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM orders WHERE rest_id="+restId+"", null);
         cursor.moveToFirst();
         List<Order> orders = new ArrayList();
         while(cursor.isAfterLast() == false)
@@ -127,23 +127,27 @@ public class RestaurantModel {
         }
         int length = ingredients.length();
         ingredients = ingredients.substring(0, length-1);
-        db.execSQL("INSERT INTO order (name, rest_id, ingredients) VALUES ("+order.getName()+","+order.getRestId()+","+ingredients+")");
+        System.out.println(order.getName());
+        System.out.println(order.getRestId());
+        System.out.println(ingredients); //(name, rest_id, ingredients)
+        db.execSQL("INSERT INTO orders VALUES ("+order.getName()+","+order.getRestId()+","+ingredients+")");
     }
 
     public static void removeOrder(SQLiteDatabase db, int id)
     {
-        db.execSQL("DELETE FROM order WHERE _id="+id+"");
+        db.execSQL("DELETE FROM orders WHERE _id="+id+"");
     }
 
     public static List<Category> getCategory(SQLiteDatabase db, int restId, boolean isCollection)
     {
-        Cursor cursor = db.rawQuery("SELECT * FROM menu WHERE rest_id="+restId+" AND is_collection="+(isCollection?1:0)+"",null);
+        Cursor cursor = db.rawQuery("SELECT * FROM menu WHERE rest_id="+restId+" AND is_collection="+(isCollection?1:0)+" ORDER BY display_order",null);
         cursor.moveToFirst();
         List<Category> categories = new ArrayList();
         while (cursor.isAfterLast() == false) {
             Category category = new Category();
             category.setId(cursor.getInt(cursor.getColumnIndex("category_id")));
             category.setName(cursor.getString(cursor.getColumnIndex("category_name")));
+            if(!isCollection)System.out.println(category.getName());
             categories.add(category);
             cursor.moveToNext();
         }

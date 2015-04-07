@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:textAlignment="center" />
     <Button
-        android:id="@+id/order_add_button"
+        android:id="@+id/order_add_finishbutton"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
         android:gravity="end|bottom"

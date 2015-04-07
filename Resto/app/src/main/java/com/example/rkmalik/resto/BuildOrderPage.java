@@ -19,10 +19,11 @@ import java.util.List;
 public class BuildOrderPage extends ActionBarActivity {
     BuildOrderPageOneAdapter listAdapter;
     ExpandableListView listView;
-    List<Category> categoryList;
+    List<Category> collectionList;
     DBHelper dbHelper;
     int id;
     int openGroupIndex = 0;
+    String callingactivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +35,11 @@ public class BuildOrderPage extends ActionBarActivity {
 
         dbHelper = new DBHelper(this.getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
-        categoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
+        collectionList = RestaurantModel.getCategory(database, id, true);
 
-        for(int i=0; i<categoryList.size(); i++)
+        for(int i=0; i<collectionList.size(); i++)
         {
-            Category category = categoryList.get(i);
+            Category category = collectionList.get(i);
             category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
         }
 
@@ -46,7 +47,7 @@ public class BuildOrderPage extends ActionBarActivity {
 
         listView = (ExpandableListView) this.findViewById(R.id.buildorder_expandableListView);
 
-        listAdapter = new BuildOrderPageOneAdapter(this, categoryList, id);
+        listAdapter = new BuildOrderPageOneAdapter(this, collectionList, id);
         listView.setAdapter(listAdapter);
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
 
@@ -98,16 +99,17 @@ public class BuildOrderPage extends ActionBarActivity {
         super.onResume();
         dbHelper = new DBHelper(this.getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
-        categoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
+        collectionList = RestaurantModel.getCategory(database, id, true);
 
-        for(int i=0; i<categoryList.size(); i++)
+        for(int i=0; i<collectionList.size(); i++)
         {
-            Category category = categoryList.get(i);
+            Category category = collectionList.get(i);
             category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
         }
 
         database.close();
-        listAdapter = new BuildOrderPageOneAdapter(this, categoryList, id);
+        System.out.println("resume");
+        listAdapter = new BuildOrderPageOneAdapter(this, collectionList, id);
         listView.setAdapter(listAdapter);
         if(openGroupIndex > -1){
             listView.expandGroup(openGroupIndex);

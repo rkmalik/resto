@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import com.example.rkmalik.data.Category;
+import com.example.rkmalik.data.Order;
 import com.example.rkmalik.model.DBHelper;
 import com.example.rkmalik.model.RestaurantModel;
 
@@ -22,12 +25,14 @@ import java.util.Locale;
 public class BuildOrderPageTwo extends ActionBarActivity {
     BuildOrderPageTwoAdapter listAdapter;
     ExpandableListView listView;
+    Button finishBtn;
     List<Category> categoryList;
     DBHelper dbHelper;
     int id;
-    int collectionId;
+    String collectionName;
     int openGroupIndex = 0;
     private TextToSpeech tts;
+    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +41,11 @@ public class BuildOrderPageTwo extends ActionBarActivity {
 
         Intent intent = this.getIntent();
         id = intent.getIntExtra("restId", 0);
-        collectionId = intent.getIntExtra("id", 0);
+        collectionName = intent.getStringExtra("name");
 
         dbHelper = new DBHelper(this.getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
-        categoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
+        categoryList = RestaurantModel.getCategory(database, id, false);
 
         for(int i=0; i<categoryList.size(); i++)
         {
@@ -57,23 +62,19 @@ public class BuildOrderPageTwo extends ActionBarActivity {
 
                     int result = tts.setLanguage(Locale.US);
 
-                    // tts.setPitch(5); // set pitch level
-
-                    // tts.setSpeechRate(2); // set speech speed rate
-
                     if (result == TextToSpeech.LANG_MISSING_DATA
                             || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                         Log.e("TTS", "Language is not supported");
                     }
                 } else {
-                    Log.e("TTS", "Initilization Failed");
+                    Log.e("TTS", "Initialization Failed");
                 }
             }
         });
 
         listView = (ExpandableListView) this.findViewById(R.id.buildorder_expandableListView2);
 
-        listAdapter = new BuildOrderPageTwoAdapter(this, categoryList, id, collectionId,tts);
+        listAdapter = new BuildOrderPageTwoAdapter(this, categoryList, id,tts);
         listView.setAdapter(listAdapter);
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
 
@@ -88,6 +89,23 @@ public class BuildOrderPageTwo extends ActionBarActivity {
             @Override
             public void onGroupCollapse(int i) {
                 openGroupIndex = -1;
+            }
+        });
+
+        finishBtn = (Button) this.findViewById(R.id.order_add_finishbutton);
+        finishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Order order = new Order();
+                order.setName(collectionName);
+                order.setIngredients(listAdapter.getIngredientsList());
+                order.setRestId(id);
+                SQLiteDatabase database = dbHelper.openDatabase();
+                RestaurantModel.addOrder(database, order);
+                database.close();
+                Intent intent = new Intent(activity, FoodItems.class);
+                intent.putExtra("restId", id);
+                startActivity(intent);
             }
         });
 
@@ -123,22 +141,26 @@ public class BuildOrderPageTwo extends ActionBarActivity {
     public void onResume()
     {
         super.onResume();
-        dbHelper = new DBHelper(this.getApplicationContext());
-        SQLiteDatabase database = dbHelper.openDatabase();
-        categoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
-
-        for(int i=0; i<categoryList.size(); i++)
+        if(dbHelper==null)
         {
-            Category category = categoryList.get(i);
-            category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
+            dbHelper = new DBHelper(this.getApplicationContext());
+            SQLiteDatabase database = dbHelper.openDatabase();
+            categoryList = RestaurantModel.getCategory(database, id, false);
+
+            for(int i=0; i<categoryList.size(); i++)
+            {
+                Category category = categoryList.get(i);
+                category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
+            }
+
+            database.close();
+            listAdapter = new BuildOrderPageTwoAdapter(this, categoryList, id, tts);
+            listView.setAdapter(listAdapter);
+            if(openGroupIndex > -1){
+                listView.expandGroup(openGroupIndex);
+            }
         }
 
-        database.close();
-        listAdapter = new BuildOrderPageTwoAdapter(this, categoryList, id, collectionId, tts);
-        listView.setAdapter(listAdapter);
-        if(openGroupIndex > -1){
-            listView.expandGroup(openGroupIndex);
-        }
     }
 
     @Override
