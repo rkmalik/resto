@@ -36,8 +36,6 @@ public class RestaurantListViewFragment extends ListFragment {
     private List<Rest_ListViewItem_Holder> mItems;        // ListView items list
     private SQLiteDatabase database = null;
     private List<Restaurant> restaurantListFromDB;
-    private Location location = null;
-    private final String GOOGLE_KEY = "AIzaSyAyd5ykRddddp8ROOFa14rUVExQygBQ-dA";
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,10 +48,7 @@ public class RestaurantListViewFragment extends ListFragment {
         restaurantListFromDB = RestaurantModel.getRestList(database);
         database.close();
 
-        LocationSettings gps = new LocationSettings(this.getActivity());
-        location = gps.getLastLocation();
-
-        new googleplaces().execute();
+        setListAdapter(new RestaurantListAdapter(getActivity(), restaurantListFromDB));
 
         // initialize and set the list adapter
        // setListAdapter(new RestaurantListAdapter(getActivity(), restaurantListFromDB));
@@ -85,94 +80,4 @@ public class RestaurantListViewFragment extends ListFragment {
         //foodItemsIntent.putParcelableArrayListExtra("restaurant", selectedRestaurant);
         startActivity(foodItemsIntent);
     }
-
-    private class googleplaces extends AsyncTask<View, Void, String>
-    {
-        String temp;
-
-        @Override
-        protected String doInBackground(View... urls) {
-            temp = makeHttpCall("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude()) + "&rankby=distance&types=restaurant&key=" + GOOGLE_KEY);
-            return "";
-        }
-
-        @Override
-        protected void onPreExecute()
-        {}
-
-        @Override
-        protected void onPostExecute(String result)
-        {
-            List<Restaurant> finalRestList = new ArrayList<>();
-            List<String> nearByRestFromGoogle = new ArrayList<>();
-            if(temp != null)
-            {
-              /*  nearByRestFromGoogle = parseGooglePlacesResults(temp);
-
-                for(int i=0; i<nearByRestFromGoogle.size(); i++)
-                {
-                    for(int j=0; j<restaurantListFromDB.size(); j++)
-                    {
-                        if(nearByRestFromGoogle.get(i).contains(restaurantListFromDB.get(j).getName()))
-                            finalRestList.add(restaurantListFromDB.get(j));
-
-                    }
-                } */
-
-                setListAdapter(new RestaurantListAdapter(getActivity(), restaurantListFromDB));
-            }
-        }
-    }
-
-    public static String makeHttpCall(String url)
-    {
-        StringBuffer stringBuffer = new StringBuffer(url);
-        String replyString = "";
-
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(stringBuffer.toString());
-
-        try
-        {
-            HttpResponse response = httpClient.execute(httpGet);
-            InputStream inputStream = response.getEntity().getContent();
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            ByteArrayBuffer byteArrayBuffer = new ByteArrayBuffer(20);
-            int current = 0;
-            while((current = bufferedInputStream.read()) != -1)
-                byteArrayBuffer.append((byte)current);
-            replyString = new String(byteArrayBuffer.toByteArray());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // System.out.println(replyString);
-        return replyString.trim();
-    }
-
-    private static List<String> parseGooglePlacesResults(final String response)
-    {
-        List<String> restList = new ArrayList<>();
-        try
-        {
-            JSONObject jsonObject = new JSONObject(response);
-            if(jsonObject.has("results"))
-            {
-                JSONArray jsonArray = jsonObject.getJSONArray("results");
-                for(int i=0; i<jsonArray.length(); i++)
-                {
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                    if(jsonObject1.has("name"))
-                    {
-                        restList.add(jsonObject1.optString("name"));
-                    }
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return restList;
-    }
-
-
 }
