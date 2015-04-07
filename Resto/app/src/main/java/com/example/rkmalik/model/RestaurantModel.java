@@ -102,7 +102,7 @@ public class RestaurantModel {
 
     public static List<Order> getOrdersForRestaurant(SQLiteDatabase db, int restId)
     {
-        Cursor cursor = db.rawQuery("SELECT * FROM ORDER WHERE rest_id="+restId, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM order WHERE rest_id="+restId+"", null);
         cursor.moveToFirst();
         List<Order> orders = new ArrayList();
         while(cursor.isAfterLast() == false)
@@ -127,12 +127,12 @@ public class RestaurantModel {
         }
         int length = ingredients.length();
         ingredients = ingredients.substring(0, length-1);
-        db.execSQL("INSERT INTO ORDER (name, rest_id, ingredients) VALUES ("+order.getName()+","+order.getRestId()+","+ingredients+")");
+        db.execSQL("INSERT INTO order (name, rest_id, ingredients) VALUES ("+order.getName()+","+order.getRestId()+","+ingredients+")");
     }
 
     public static void removeOrder(SQLiteDatabase db, int id)
     {
-        db.execSQL("DELETE FROM ORDER WHERE _id="+id+"");
+        db.execSQL("DELETE FROM order WHERE _id="+id+"");
     }
 
     public static List<Category> getCategory(SQLiteDatabase db, int restId, boolean isCollection)

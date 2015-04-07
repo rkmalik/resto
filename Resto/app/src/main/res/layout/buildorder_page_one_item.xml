@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@color/frame_background"
+        android:padding="5dp"
+        android:focusable="false"
+        android:clickable="false">
+
+        <!-- the innner view - provides the white rectangle -->
+        <RelativeLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/frame"
+            android:focusable="false"
+            android:clickable="false">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/buildorder_imageView"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:layout_alignParentLeft="true"
+                android:focusable="false"
+                android:clickable="false"/>
+
+            <!-- the container view for the title and description -->
+            <RelativeLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/buildorder_imageView"
+                android:layout_centerVertical="true"
+                android:focusable="false"
+                android:clickable="false">
+
+                <!-- the name view -->
+                <TextView android:id="@+id/buildorder_ListItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:focusable="false"
+                    android:clickable="false"
+                    android:textColor="#000000"/>
+
+                <!-- the alias name view -->
+                <TextView android:id="@+id/buildorder_aliasName"
+                    android:layout_below="@id/buildorder_ListItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textStyle="bold"
+                    android:focusable="false"
+                    android:clickable="false"
+                    android:textColor="#000000"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/buildorder_aliasName"
+                    android:focusable="true"
+                    android:clickable="false">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:padding="5dp"
+                        android:layout_marginRight="50dp"
+                        android:id="@+id/buildorder_image_vegnoveg"
+                        android:focusable="false"
+                        android:clickable="false"/>
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/frame"
+            android:layout_alignParentRight="true">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/frame"
+                android:id="@+id/buildorder_forwardButton"
+                android:src="@drawable/ic_action_next_item"
+                android:focusable="false"
+                android:clickable="false"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

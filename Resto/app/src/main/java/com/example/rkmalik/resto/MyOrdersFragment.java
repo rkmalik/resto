@@ -12,8 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 
-import com.example.rkmalik.data.Category;
+import com.example.rkmalik.data.Order;
 import com.example.rkmalik.model.DBHelper;
 import com.example.rkmalik.model.RestaurantModel;
 
@@ -24,7 +25,8 @@ import java.util.Locale;
 public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitListener{
     MyOrdersListAdapter listAdapter;
     ExpandableListView listView;
-    List<Category> ordercategoryList;
+    ImageButton order_add_button;
+    List<Order> orderList;
     Activity fragActivity;
     DBHelper dbHelper;
     int id;
@@ -41,25 +43,17 @@ public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitLis
         Intent intent = this.getActivity().getIntent();
         id = intent.getIntExtra("restId", 0);
 
-//        dbHelper = new DBHelper(this.getActivity().getApplicationContext());
-//        SQLiteDatabase database = dbHelper.openDatabase();
-//        ordercategoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
-//
-//        for(int i=0; i<ordercategoryList.size(); i++)
-//        {
-//            Category category = ordercategoryList.get(i);
-//            category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
-//        }
-//
-//        database.close();
+        dbHelper = new DBHelper(this.getActivity().getApplicationContext());
+        SQLiteDatabase database = dbHelper.openDatabase();
+        orderList = RestaurantModel.getOrdersForRestaurant(database, id);
 
-        ordercategoryList = new ArrayList<Category>();
+        database.close();
 
         tts = new TextToSpeech(this.getActivity(), this);
 
         listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView3);
 
-        listAdapter = new MyOrdersListAdapter(fragActivity, ordercategoryList, id, tts);
+        listAdapter = new MyOrdersListAdapter(fragActivity, orderList, id, tts);
         listView.setAdapter(listAdapter);
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
 
@@ -74,6 +68,16 @@ public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitLis
             @Override
             public void onGroupCollapse(int i) {
                 openGroupIndex = -1;
+            }
+        });
+
+        order_add_button = (ImageButton) rootView.findViewById(R.id.order_add_button);
+        order_add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(fragActivity, BuildOrderPage.class);
+                intent.putExtra("restId", id);
+                fragActivity.startActivity(intent);
             }
         });
 
@@ -117,9 +121,9 @@ public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitLis
 //        }
 //
 //        database.close();
-        ordercategoryList = new ArrayList<Category>();
+        orderList = new ArrayList<Order>();
 
-        listAdapter = new MyOrdersListAdapter(fragActivity, ordercategoryList, id, tts);
+        listAdapter = new MyOrdersListAdapter(fragActivity, orderList, id, tts);
         listView.setAdapter(listAdapter);
         if(openGroupIndex > -1){
             listView.expandGroup(openGroupIndex);
