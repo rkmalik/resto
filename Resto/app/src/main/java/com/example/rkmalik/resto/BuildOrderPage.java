@@ -30,6 +30,7 @@ public class BuildOrderPage extends ActionBarActivity {
     int openGroupIndex = 0;
     String callingactivity;
     static final int END_ACTIVITY_REQUEST = 0;
+    static final int END_ACTIVITY_RESULT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,12 @@ public class BuildOrderPage extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+
+        if(id == android.R.id.home){
+            super.onBackPressed();
             return true;
         }
 
@@ -136,7 +142,7 @@ public class BuildOrderPage extends ActionBarActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == END_ACTIVITY_REQUEST){
-            if(resultCode == RESULT_CANCELED){
+            if(resultCode == END_ACTIVITY_RESULT){
                 this.finish();
             }
         }

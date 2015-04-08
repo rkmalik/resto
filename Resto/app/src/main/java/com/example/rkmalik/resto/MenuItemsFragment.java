@@ -47,6 +47,8 @@ public class MenuItemsFragment extends Fragment  implements TextToSpeech.OnInitL
         Intent intent = this.getActivity().getIntent();
         id = intent.getIntExtra("restId", 0);
 
+        System.out.println("Menu Item Fragment Resume, Id = " + id);
+
         dbHelper = new DBHelper(this.getActivity().getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
         categoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
@@ -112,6 +114,7 @@ public class MenuItemsFragment extends Fragment  implements TextToSpeech.OnInitL
         super.onResume();
         dbHelper = new DBHelper(this.getActivity().getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
+        System.out.println("Menu Item Fragmen, Id = " + id);
         categoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
 
         for(int i=0; i<categoryList.size(); i++)

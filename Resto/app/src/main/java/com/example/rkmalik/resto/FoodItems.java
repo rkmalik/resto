@@ -113,9 +113,9 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         if(id == android.R.id.home){
             NavUtils.navigateUpTo(this, new Intent(this, NearByRestaurants.class));

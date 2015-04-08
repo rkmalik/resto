@@ -33,7 +33,7 @@ public class BuildOrderPageTwo extends ActionBarActivity {
     int openGroupIndex = 0;
     private TextToSpeech tts;
     Activity activity;
-    static final int EXIT_PARENT_ACTIVITY = 0;
+    static final int EXIT_PARENT_ACTIVITY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +71,25 @@ public class BuildOrderPageTwo extends ActionBarActivity {
             }
         });
 
+        finishBtn = (Button) this.findViewById(R.id.order_add_finishbutton);
+        finishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addOrders();
+            }
+        });
+
+        cancelBtn = (Button) this.findViewById(R.id.order_add_cancelbutton);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancel();
+            }
+        });
+
         listView = (ExpandableListView) this.findViewById(R.id.buildorder_expandableListView2);
 
-        listAdapter = new BuildOrderPageTwoAdapter(this, categoryList, id,tts);
+        listAdapter = new BuildOrderPageTwoAdapter(this, categoryList, id,tts, finishBtn);
         listView.setAdapter(listAdapter);
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
 
@@ -88,22 +104,6 @@ public class BuildOrderPageTwo extends ActionBarActivity {
             @Override
             public void onGroupCollapse(int i) {
                 openGroupIndex = -1;
-            }
-        });
-
-        finishBtn = (Button) this.findViewById(R.id.order_add_finishbutton);
-        finishBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addOrders();
-            }
-        });
-
-        cancelBtn = (Button) this.findViewById(R.id.order_add_cancelbutton);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cancel();
             }
         });
 
@@ -148,9 +148,9 @@ public class BuildOrderPageTwo extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         if (id == android.R.id.home) {
             super.onBackPressed();
@@ -178,7 +178,7 @@ public class BuildOrderPageTwo extends ActionBarActivity {
 
             database.close();
         }
-        listAdapter = new BuildOrderPageTwoAdapter(this, categoryList, id, tts);
+        listAdapter = new BuildOrderPageTwoAdapter(this, categoryList, id, tts, finishBtn);
         listView.setAdapter(listAdapter);
         if(openGroupIndex > -1){
             listView.expandGroup(openGroupIndex);
