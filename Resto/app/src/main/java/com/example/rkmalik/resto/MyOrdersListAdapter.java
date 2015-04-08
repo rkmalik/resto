@@ -1,10 +1,15 @@
 package com.example.rkmalik.resto;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +19,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rkmalik.data.Category;
 import com.example.rkmalik.data.FoodItem;
 import com.example.rkmalik.data.Order;
+import com.example.rkmalik.model.DBHelper;
+import com.example.rkmalik.model.RestaurantModel;
 
 import java.util.List;
 import java.util.Locale;
@@ -26,15 +34,18 @@ import java.util.Locale;
  * Created by shashankranjan on 4/6/15.
  */
 public class MyOrdersListAdapter extends BaseExpandableListAdapter implements TextToSpeech.OnInitListener {
-    private Context _context;
+    private Activity _activity;
     private List<Order> _orderList;
     private int restId;
     private TextToSpeech tts;
+    DBHelper dbHelper;
+    private Fragment _fragment;
 
-    public MyOrdersListAdapter(Context context, List<Order> orderList, int restId, TextToSpeech tts)
+    public MyOrdersListAdapter(Activity activity, Fragment fragment, List<Order> orderList, int restId, TextToSpeech tts)
     {
         this._orderList = orderList;
-        this._context = context;
+        this._activity = activity;
+        this._fragment = fragment;
         this.restId = restId;
         this.tts = tts;
     }
@@ -87,13 +98,12 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
     }
 
     @Override
-    public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
+    public View getGroupView(final int i, boolean b, View view, ViewGroup viewGroup) {
         //if(!isListEmpty()) {
-            System.out.println("here !!");
             final String headerText = (String) getGroup(i);
 
             if (view == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater infalInflater = (LayoutInflater) this._activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = infalInflater.inflate(R.layout.orders_list_group, null);
             }
 
@@ -101,15 +111,41 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
             lblListHeader.setTypeface(null, Typeface.BOLD);
             lblListHeader.setText(headerText);
 
-            Button delButton = (Button) view.findViewById(R.id.del_button);
+            ImageButton delButton = (ImageButton) view.findViewById(R.id.del_button);
+            delButton.setImageResource(R.mipmap.ic_delete);
             delButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("Delete Pressed");
+                    confirmDelete(i);
                 }
             });
+            delButton.setFocusable(false);
        // }
         return view;
+    }
+
+    private void confirmDelete(final int orderIndex){
+        new AlertDialog.Builder(_activity)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Delete Order")
+                .setMessage("Do you want to delete order '" + _orderList.get(orderIndex).getName() +"'")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                          deleteOrder(orderIndex);
+                    }
+                }).setNegativeButton("No", null)
+                .show();
+    }
+
+    private void deleteOrder(int orderIndex){
+        dbHelper = new DBHelper(_activity.getApplicationContext());
+        SQLiteDatabase database = dbHelper.openDatabase();
+        Order order = _orderList.get(orderIndex);
+        RestaurantModel.removeOrder(database, order.getId());
+        database.close();
+        Toast.makeText(_activity, "Order " + order.getName() + " is deleted", Toast.LENGTH_SHORT).show();
+        _fragment.onResume();
     }
 
     @Override
@@ -118,7 +154,7 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
             final FoodItem foodItem = _orderList.get(grpPos).getIngredients().get(childPos);
 
             if (convertView == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater infalInflater = (LayoutInflater) this._activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = infalInflater.inflate(R.layout.list_item, null);
             }
 
@@ -128,10 +164,10 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
             imgListChild.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
+                    Intent detailIntent = new Intent(_activity, FoodItemDetailActivity.class);
                     detailIntent.putExtra("id", foodItem.getId());
                     detailIntent.putExtra("restId", restId);
-                    _context.startActivity(detailIntent);
+                    _activity.startActivity(detailIntent);
 
                 }
             });
@@ -141,10 +177,10 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
             txtListChild.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
+                    Intent detailIntent = new Intent(_activity, FoodItemDetailActivity.class);
                     detailIntent.putExtra("id", foodItem.getId());
                     detailIntent.putExtra("restId", restId);
-                    _context.startActivity(detailIntent);
+                    _activity.startActivity(detailIntent);
                 }
             });
 
@@ -153,10 +189,10 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
             txtListAlias.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
+                    Intent detailIntent = new Intent(_activity, FoodItemDetailActivity.class);
                     detailIntent.putExtra("id", foodItem.getId());
                     detailIntent.putExtra("restId", restId);
-                    _context.startActivity(detailIntent);
+                    _activity.startActivity(detailIntent);
                 }
             });
 
@@ -166,10 +202,10 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
                 txtListCalorie.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
+                        Intent detailIntent = new Intent(_activity, FoodItemDetailActivity.class);
                         detailIntent.putExtra("id", foodItem.getId());
                         detailIntent.putExtra("restId", restId);
-                        _context.startActivity(detailIntent);
+                        _activity.startActivity(detailIntent);
                     }
                 });
             }
@@ -192,10 +228,10 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
             forwardBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
+                    Intent detailIntent = new Intent(_activity, FoodItemDetailActivity.class);
                     detailIntent.putExtra("id", foodItem.getId());
                     detailIntent.putExtra("restId", restId);
-                    _context.startActivity(detailIntent);
+                    _activity.startActivity(detailIntent);
                 }
             });
         //}
@@ -227,7 +263,7 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
     }
 
     private void speakOut(String text) {
-        AudioManager am = (AudioManager)_context.getSystemService(Context.AUDIO_SERVICE);
+        AudioManager am = (AudioManager)_activity.getSystemService(Context.AUDIO_SERVICE);
         int amStreamMusicMaxVol = am.getStreamVolume(am.STREAM_VOICE_CALL);
         am.setStreamVolume(am.STREAM_VOICE_CALL, amStreamMusicMaxVol, 0);
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
@@ -235,7 +271,6 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
     }
 
     private boolean isListEmpty(){
-        System.out.println("isempty = " + this._orderList.size());
         return (this._orderList.size() <= 0);
     }
 }

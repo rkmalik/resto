@@ -41,7 +41,6 @@ public class FavoritesFragment extends Fragment implements TextToSpeech.OnInitLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        System.out.println("Favorite View Created!!");
         View rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
         fragActivity = this.getActivity();
 

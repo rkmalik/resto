@@ -1,5 +1,6 @@
 package com.example.rkmalik.resto;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -20,13 +21,13 @@ import java.util.List;
  * Created by shashankranjan on 4/7/15.
  */
 public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
-    private Context _context;
+    private Activity _parentActivity;
     private List<Category> _orderCategory;
     private int _restId;
+    static final int END_ACTIVITY_REQUEST = 0;
 
-    public BuildOrderPageOneAdapter(Context context, List<Category> orderCategory, int restId){
-        _context = context;
-        System.out.println(orderCategory.size());
+    public BuildOrderPageOneAdapter(Activity parentAct, List<Category> orderCategory, int restId){
+        _parentActivity = parentAct;
         _orderCategory = orderCategory;
         _restId = restId;
     }
@@ -72,7 +73,7 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
             final String headerText = (String) getGroup(i);
 
             if (view == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater infalInflater = (LayoutInflater) this._parentActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = infalInflater.inflate(R.layout.list_group, null);
             }
 
@@ -89,7 +90,7 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
             final FoodItem foodItem = _orderCategory.get(grpPos).getFoodItems().get(childPos);
 
             if (convertView == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater infalInflater = (LayoutInflater) this._parentActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = infalInflater.inflate(R.layout.buildorder_page_one_item, null);
             }
 
@@ -99,10 +100,7 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
             imgListChild.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
-                    step2Intent.putExtra("name", foodItem.getName());
-                    step2Intent.putExtra("restId", _restId);
-                    _context.startActivity(step2Intent);
+                    goForward(foodItem);
 
                 }
             });
@@ -112,10 +110,7 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
             txtListChild.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
-                    step2Intent.putExtra("name", foodItem.getName());
-                    step2Intent.putExtra("restId", _restId);
-                    _context.startActivity(step2Intent);
+                    goForward(foodItem);
                 }
             });
 
@@ -124,10 +119,7 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
             txtListAlias.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
-                    step2Intent.putExtra("name", foodItem.getName());
-                    step2Intent.putExtra("restId", _restId);
-                    _context.startActivity(step2Intent);
+                    goForward(foodItem);
                 }
             });
 
@@ -139,14 +131,18 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
             forwardBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
-                    step2Intent.putExtra("name", foodItem.getName());
-                    step2Intent.putExtra("restId", _restId);
-                    _context.startActivity(step2Intent);
+                    goForward(foodItem);
                 }
             });
         }
         return convertView;
+    }
+
+    private void goForward(FoodItem foodItem){
+        Intent step2Intent = new Intent(_parentActivity, BuildOrderPageTwo.class);
+        step2Intent.putExtra("name", foodItem.getName());
+        step2Intent.putExtra("restId", _restId);
+        _parentActivity.startActivityForResult(step2Intent, 0);
     }
 
     @Override

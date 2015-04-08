@@ -170,7 +170,6 @@ public class ListViewAdapter extends ArrayAdapter<FoodItem> implements ListAdapt
 
             @Override
             public void onClick(View view) {
-                System.out.println("The index is " + i);
                 dbHelper = new DBHelper(_context);
                 SQLiteDatabase database = dbHelper.openDatabase();
                 foodItem.setFav(false);

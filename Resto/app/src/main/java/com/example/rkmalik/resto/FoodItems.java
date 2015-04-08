@@ -24,9 +24,14 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
+    FavoritesFragment favoritesFragment;
+    MenuItemsFragment menuItemsFragment;
+    MyOrdersFragment ordersFragment;
 
     //Tab titles
     private String[] tabs = {"Menu", "Favorites", "My Orders"};
+
+    static final int REFRESH_PAGE_MYORDERS = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +66,16 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
+                System.out.println("Page is selected");
                 if(position == 1) //fav frag pos
                 {
-                    FavoritesFragment favoritesFragment = (FavoritesFragment) mAdapter.instantiateItem(viewPager, position);
+                    favoritesFragment = (FavoritesFragment) mAdapter.instantiateItem(viewPager, position);
                     favoritesFragment.onResume();
                 } else if(position == 0) {
-                    MenuItemsFragment menuItemsFragment = (MenuItemsFragment) mAdapter.instantiateItem(viewPager, position);
+                    menuItemsFragment = (MenuItemsFragment) mAdapter.instantiateItem(viewPager, position);
                     menuItemsFragment.onResume();
                 } else {
-                    MyOrdersFragment ordersFragment = (MyOrdersFragment) mAdapter.instantiateItem(viewPager, position);
+                    ordersFragment = (MyOrdersFragment) mAdapter.instantiateItem(viewPager, position);
                     ordersFragment.onResume();
                 }
             }
@@ -162,6 +168,14 @@ public class FoodItems extends ActionBarActivity implements ActionBar.TabListene
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_food_items, container, false);
             return rootView;
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        System.out.println("Food Items page, request Code = " + requestCode + ", resultCode = " + resultCode);
+        if(requestCode == REFRESH_PAGE_MYORDERS){
+            viewPager.setCurrentItem(2);
+            ordersFragment.onResume();
         }
     }
 }

@@ -25,7 +25,7 @@ import java.util.Locale;
 public class BuildOrderPageTwo extends ActionBarActivity {
     BuildOrderPageTwoAdapter listAdapter;
     ExpandableListView listView;
-    Button finishBtn;
+    Button finishBtn, cancelBtn;
     List<Category> categoryList;
     DBHelper dbHelper;
     int id;
@@ -33,6 +33,7 @@ public class BuildOrderPageTwo extends ActionBarActivity {
     int openGroupIndex = 0;
     private TextToSpeech tts;
     Activity activity;
+    static final int EXIT_PARENT_ACTIVITY = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +99,22 @@ public class BuildOrderPageTwo extends ActionBarActivity {
             }
         });
 
+        cancelBtn = (Button) this.findViewById(R.id.order_add_cancelbutton);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancel();
+            }
+        });
+
         if(openGroupIndex > -1) {
             listView.expandGroup(openGroupIndex);
         }
+    }
+
+    private void cancel(){
+        setResult(EXIT_PARENT_ACTIVITY);
+        this.finish();
     }
 
     public void addOrders(){
@@ -111,9 +125,11 @@ public class BuildOrderPageTwo extends ActionBarActivity {
         SQLiteDatabase database = dbHelper.openDatabase();
         RestaurantModel.addOrder(database, order);
         database.close();
-        Intent intent = new Intent(this, FoodItems.class);
-        intent.putExtra("restId", id);
-        startActivity(intent);
+//        Intent intent = new Intent(this, FoodItems.class);
+//        intent.putExtra("restId", id);
+//        startActivity(intent);
+        setResult(EXIT_PARENT_ACTIVITY);
+        this.finish();
     }
 
 
