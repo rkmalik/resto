@@ -72,84 +72,84 @@ public class NearByRestaurants extends Activity {
 
 
         mTitle = getTitle();
-        mDrawerTitle = "Settings";
+       // mDrawerTitle = "Settings";
 
         mNavigationTitles = getResources().getStringArray(R.array.navigation_array);
 
         // Loading the full drawer Layout
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // Getting a reference to the sidebar drawer ( Title + ListView )
-        mDrawer = ( LinearLayout) findViewById(R.id.drawer);
+        //mDrawer = ( LinearLayout) findViewById(R.id.drawer);
 
         // Loading the Drawer list this will hold all the list items in the drawer
-        mDrawerList = (ListView) findViewById(R.id.drawer_list);
+        //mDrawerList = (ListView) findViewById(R.id.drawer_list);
 
         // Each row in the list stores country name, count and flag
-        mList = new ArrayList<HashMap<String,String>>();
+       // mList = new ArrayList<HashMap<String,String>>();
 
 
-        for(int i=0;i<4;i++){
-            HashMap<String, String> hm = new HashMap<String,String>();
-            hm.put(ICONNAME, mNavigationTitles[i]);
-            //hm.put(COUNT, mCount[i]);
-            hm.put(ICONIMG, Integer.toString(drawerIconId[i]) );
-            mList.add(hm);
-        }
+//        for(int i=0;i<4;i++){
+//            HashMap<String, String> hm = new HashMap<String,String>();
+//            hm.put(ICONNAME, mNavigationTitles[i]);
+//            //hm.put(COUNT, mCount[i]);
+//            hm.put(ICONIMG, Integer.toString(drawerIconId[i]) );
+//            mList.add(hm);
+//        }
 
         // Keys used in Hashmap
-        String[] from = { ICONIMG,ICONNAME};
+        //String[] from = { ICONIMG,ICONNAME};
 
         // Ids of views in listview_layout
-        int[] to = { R.id.iconimage , R.id.iconname};
+        //int[] to = { R.id.iconimage , R.id.iconname};
 
         // Instantiating an adapter to store each items
         // R.layout.drawer_layout defines the layout of each item
-        mAdapter = new SimpleAdapter(this, mList, R.layout.drawer_layout, from, to);
+        //mAdapter = new SimpleAdapter(this, mList, R.layout.drawer_layout, from, to);
 
 
-        StateListDrawable selector = new StateListDrawable();
-        selector.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(R.color.gray));
+        //StateListDrawable selector = new StateListDrawable();
+        //selector.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(R.color.gray));
         //selector.addState(new int[]{-android.R.attr.state_pressed}, new ColorDrawable(R.color.red));
 
-        mDrawerList.setSelector(selector);
+        //mDrawerList.setSelector(selector);
 
 
         // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
         // Setting the adapter with the Titles
-        mDrawerList.setAdapter(mAdapter);
+        //mDrawerList.setAdapter(mAdapter);
         /*mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mNavigationTitles));
 */
         // Setting the drawer listner when some item is clicked in the list.
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        //mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setDisplayUseLogoEnabled(true);
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-        ) {
-            public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
+//        mDrawerToggle = new ActionBarDrawerToggle(
+//                this,                  /* host Activity */
+//                mDrawerLayout,         /* DrawerLayout object */
+//                R.drawable.ic_drawer,
+//                R.string.drawer_open,  /* "open drawer" description for accessibility */
+//                R.string.drawer_close  /* "close drawer" description for accessibility */
+//        ) {
+//            public void onDrawerClosed(View view) {
+//                getActionBar().setTitle(mTitle);
+//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+//            }
+//
+//            public void onDrawerOpened(View drawerView) {
+//                getActionBar().setTitle(mDrawerTitle);
+//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+//            }
+//        };
 
-            public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        //mDrawerLayout.setDrawerListener(mDrawerToggle);
+        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
   //      List<Restaurant> restaurantList = RestaurantModel.getRestList(database);
 
@@ -177,7 +177,7 @@ public class NearByRestaurants extends Activity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
+        //mDrawerToggle.syncState();
     }
     public void showFragment() {
 
@@ -258,43 +258,44 @@ public class NearByRestaurants extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
 
         // Handle action buttons
-        switch(item.getItemId()) {
-
-            case R.id.icon:
-                boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-                if (drawerOpen) {
-                    mDrawerLayout.closeDrawer(mDrawerList);
-                } else  {
-                    mDrawerLayout.openDrawer(mDrawerList);
-                }
-                return true;
-
-            case R.id.action_settings:
-                Toast.makeText(NearByRestaurants.this, "You Clicked at ", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case R.id.action_websearch:
-                // create intent to perform web search for this planet
-                /*Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-                // catch event that there's no activity to handle intent
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-                }*/
-                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-                return true;
-
-            case android.R.id.home:
-                if(mDrawerLayout.isDrawerOpen(mDrawer)){
-                    mDrawerLayout.closeDrawer(mDrawer);
-                } else {
-                    mDrawerLayout.openDrawer(mDrawer);
-                }
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+//        switch(item.getItemId()) {
+//
+//            case R.id.icon:
+//                boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+//                if (drawerOpen) {
+//                    mDrawerLayout.closeDrawer(mDrawerList);
+//                } else  {
+//                    mDrawerLayout.openDrawer(mDrawerList);
+//                }
+//                return true;
+//
+//            case R.id.action_settings:
+//                Toast.makeText(NearByRestaurants.this, "You Clicked at ", Toast.LENGTH_SHORT).show();
+//                return true;
+//
+//            case R.id.action_websearch:
+//                // create intent to perform web search for this planet
+//                /*Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+//                intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+//                // catch event that there's no activity to handle intent
+//                if (intent.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(intent);
+//                } else {
+//                    Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
+//                }*/
+//                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
+//                return true;
+//
+//            case android.R.id.home:
+//                if(mDrawerLayout.isDrawerOpen(mDrawer)){
+//                    mDrawerLayout.closeDrawer(mDrawer);
+//                } else {
+//                    mDrawerLayout.openDrawer(mDrawer);
+//                }
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+        return false;
     }
 
 }

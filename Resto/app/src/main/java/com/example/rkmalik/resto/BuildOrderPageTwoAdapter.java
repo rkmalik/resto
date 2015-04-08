@@ -1,5 +1,6 @@
 package com.example.rkmalik.resto;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,18 +29,21 @@ import java.util.Locale;
  * Created by shashankranjan on 4/7/15.
  */
 public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implements TextToSpeech.OnInitListener {
-    private Context _context;
+    private Activity _activity;
     private List<Category> _orderCategory;
     private int _restId;
     private TextToSpeech _tts;
     List<FoodItem> ingredients;
+    Button _finishBtn;
 
-    BuildOrderPageTwoAdapter(Context context, List<Category> orderCategory, int restId, TextToSpeech tts){
-        _context = context;
+    BuildOrderPageTwoAdapter(Activity activity, List<Category> orderCategory, int restId, TextToSpeech tts,
+                             Button finishBtn){
+        _activity = activity;
         _orderCategory = orderCategory;
         _restId = restId;
         _tts = tts;
         ingredients = new ArrayList<FoodItem>();
+        _finishBtn = finishBtn;
     }
 
     @Override
@@ -82,7 +87,7 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
             final String headerText = (String) getGroup(i);
 
             if (view == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater infalInflater = (LayoutInflater) this._activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = infalInflater.inflate(R.layout.list_group, null);
             }
 
@@ -99,7 +104,7 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
             final FoodItem foodItem = _orderCategory.get(grpPos).getFoodItems().get(childPos);
 
             if (convertView == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater infalInflater = (LayoutInflater) this._activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = infalInflater.inflate(R.layout.buildorder_page_two_item, null);
             }
 
@@ -109,10 +114,10 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
             imgListChild.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
+                    Intent step2Intent = new Intent(_activity, BuildOrderPageTwo.class);
                     step2Intent.putExtra("id", foodItem.getId());
                     step2Intent.putExtra("restId", _restId);
-                    _context.startActivity(step2Intent);
+                    _activity.startActivity(step2Intent);
 
                 }
             });
@@ -122,10 +127,10 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
             txtListChild.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
+                    Intent step2Intent = new Intent(_activity, BuildOrderPageTwo.class);
                     step2Intent.putExtra("id", foodItem.getId());
                     step2Intent.putExtra("restId", _restId);
-                    _context.startActivity(step2Intent);
+                    _activity.startActivity(step2Intent);
                 }
             });
 
@@ -134,10 +139,10 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
             txtListAlias.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent step2Intent = new Intent(_context, BuildOrderPageTwo.class);
+                    Intent step2Intent = new Intent(_activity, BuildOrderPageTwo.class);
                     step2Intent.putExtra("id", foodItem.getId());
                     step2Intent.putExtra("restId", _restId);
-                    _context.startActivity(step2Intent);
+                    _activity.startActivity(step2Intent);
                 }
             });
 
@@ -148,10 +153,10 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
                 txtListCalorie.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent detailIntent = new Intent(_context, FoodItemDetailActivity.class);
+                        Intent detailIntent = new Intent(_activity, FoodItemDetailActivity.class);
                         detailIntent.putExtra("id", foodItem.getId());
                         detailIntent.putExtra("restId", _restId);
-                        _context.startActivity(detailIntent);
+                        _activity.startActivity(detailIntent);
                     }
                 });
             }
@@ -161,16 +166,21 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
             imgVegNonVeg.setImageResource(foodItem.isVeg() ? R.drawable.veg_icon : R.drawable.non_veg_icon);
 
             final CheckBox imgFavButton = (CheckBox) convertView.findViewById(R.id.imageBtn_select);
-            imgFavButton.setChecked(foodItem.isFav()?true:false);
+            imgFavButton.setChecked(isFoodItemAdded(foodItem));
             imgFavButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(imgFavButton.isChecked()) {
-                        Toast.makeText(_context, foodItem.getName() + " is added to the order", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(_activity, foodItem.getName() + " is added to the order", Toast.LENGTH_SHORT).show();
                         ingredients.add(foodItem);
                     } else {
-                        Toast.makeText(_context, foodItem.getName() + " is removed from the order", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(_activity, foodItem.getName() + " is removed from the order", Toast.LENGTH_SHORT).show();
                         ingredients.remove(foodItem);
+                    }
+                    if(ingredients.size() > 0){
+                        _finishBtn.setEnabled(true);
+                    } else {
+                        _finishBtn.setEnabled(false);
                     }
                 }
             });
@@ -217,7 +227,7 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
     }
 
     private void speakOut(String text) {
-        AudioManager am = (AudioManager)_context.getSystemService(Context.AUDIO_SERVICE);
+        AudioManager am = (AudioManager)_activity.getSystemService(Context.AUDIO_SERVICE);
         int amStreamMusicMaxVol = am.getStreamVolume(am.STREAM_VOICE_CALL);
         am.setStreamVolume(am.STREAM_VOICE_CALL, amStreamMusicMaxVol, 0);
         _tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
@@ -226,5 +236,9 @@ public class BuildOrderPageTwoAdapter extends BaseExpandableListAdapter implemen
 
     public List<FoodItem> getIngredientsList(){
         return ingredients;
+    }
+
+    private boolean isFoodItemAdded(FoodItem foodItem){
+        return ingredients.contains(foodItem);
     }
 }
