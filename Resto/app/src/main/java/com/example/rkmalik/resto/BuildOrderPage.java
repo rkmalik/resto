@@ -7,7 +7,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.example.rkmalik.data.Category;
 import com.example.rkmalik.model.DBHelper;
@@ -19,11 +23,13 @@ import java.util.List;
 public class BuildOrderPage extends ActionBarActivity {
     BuildOrderPageOneAdapter listAdapter;
     ExpandableListView listView;
+    Button cancelBtn;
     List<Category> collectionList;
     DBHelper dbHelper;
     int id;
     int openGroupIndex = 0;
     String callingactivity;
+    static final int END_ACTIVITY_REQUEST = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +42,6 @@ public class BuildOrderPage extends ActionBarActivity {
         dbHelper = new DBHelper(this.getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
         collectionList = RestaurantModel.getCategory(database, id, true);
-        System.out.println(collectionList.size());
 
         for(int i=0; i<collectionList.size(); i++)
         {
@@ -66,9 +71,21 @@ public class BuildOrderPage extends ActionBarActivity {
             }
         });
 
+        cancelBtn = (Button) this.findViewById(R.id.button3);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancel();
+            }
+        });
+
         if(openGroupIndex > -1) {
             listView.expandGroup(openGroupIndex);
         }
+    }
+
+    private void cancel(){
+        super.onBackPressed();
     }
 
 
@@ -98,7 +115,6 @@ public class BuildOrderPage extends ActionBarActivity {
     public void onResume()
     {
         super.onResume();
-        System.out.println(collectionList.size());
         if(dbHelper == null) {
             dbHelper = new DBHelper(this.getApplicationContext());
             SQLiteDatabase database = dbHelper.openDatabase();
@@ -115,6 +131,14 @@ public class BuildOrderPage extends ActionBarActivity {
         listView.setAdapter(listAdapter);
         if(openGroupIndex > -1){
             listView.expandGroup(openGroupIndex);
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == END_ACTIVITY_REQUEST){
+            if(resultCode == RESULT_CANCELED){
+                this.finish();
+            }
         }
     }
 }

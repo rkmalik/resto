@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 
+import com.example.rkmalik.data.FoodItem;
 import com.example.rkmalik.data.Order;
 import com.example.rkmalik.model.DBHelper;
 import com.example.rkmalik.model.RestaurantModel;
@@ -32,11 +33,13 @@ public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitLis
     int id;
     int openGroupIndex = 0;
     private TextToSpeech tts;
+    static final int REFRESH_PAGE = 0;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        System.out.println("My Order Fragments - Create View");
         View rootView = inflater.inflate(R.layout.fragment_my_orders, container, false);
         fragActivity = this.getActivity();
 
@@ -46,14 +49,13 @@ public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitLis
         dbHelper = new DBHelper(this.getActivity().getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
         orderList = RestaurantModel.getOrdersForRestaurant(database, id);
-        System.out.println("orderlist size = " + orderList.size());
         database.close();
 
         tts = new TextToSpeech(this.getActivity(), this);
 
         listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView3);
 
-        listAdapter = new MyOrdersListAdapter(fragActivity, orderList, id, tts);
+        listAdapter = new MyOrdersListAdapter(fragActivity, this, orderList, id, tts);
         listView.setAdapter(listAdapter);
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener(){
 
@@ -77,7 +79,7 @@ public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitLis
             public void onClick(View view) {
                 Intent intent = new Intent(fragActivity, BuildOrderPage.class);
                 intent.putExtra("restId", id);
-                fragActivity.startActivity(intent);
+                fragActivity.startActivityForResult(intent, REFRESH_PAGE);
             }
         });
 
@@ -93,10 +95,6 @@ public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitLis
 
             int result = tts.setLanguage(Locale.US);
 
-            // tts.setPitch(5); // set pitch level
-
-            // tts.setSpeechRate(2); // set speech speed rate
-
             if (result == TextToSpeech.LANG_MISSING_DATA
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "Language is not supported");
@@ -110,25 +108,17 @@ public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitLis
     public void onResume()
     {
         super.onResume();
-//        dbHelper = new DBHelper(this.getActivity().getApplicationContext());
-//        SQLiteDatabase database = dbHelper.openDatabase();
-//        ordercategoryList = RestaurantModel.getCategoriesBasedOnRestaurant(database, id);
-//
-//        for(int i=0; i<ordercategoryList.size(); i++)
-//        {
-//            Category category = ordercategoryList.get(i);
-//            category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
-//        }
-//
-//        database.close();
-      /*  orderList = new ArrayList<Order>();
+        dbHelper = new DBHelper(this.getActivity().getApplicationContext());
+        SQLiteDatabase database = dbHelper.openDatabase();
+        orderList = RestaurantModel.getOrdersForRestaurant(database, id);
+        database.close();
 
-        listAdapter = new MyOrdersListAdapter(fragActivity, orderList, id, tts);
+        listAdapter = new MyOrdersListAdapter(fragActivity, this, orderList, id, tts);
         listView.setAdapter(listAdapter);
-        if(openGroupIndex > -1){
-            listView.expandGroup(openGroupIndex);
-        }*/
 
+        if(openGroupIndex > -1) {
+            listView.expandGroup(openGroupIndex);
+        }
     }
 
     @Override

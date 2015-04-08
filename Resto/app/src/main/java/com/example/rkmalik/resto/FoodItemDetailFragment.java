@@ -91,7 +91,6 @@ public class FoodItemDetailFragment extends Fragment  implements TextToSpeech.On
             favButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("Favorite Clicked");
                     foodItem.setFav(!foodItem.isFav());
                     UpdateFavourites(foodItem);
                     if(foodItem.isFav())
