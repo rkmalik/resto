@@ -46,7 +46,7 @@ public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitLis
         dbHelper = new DBHelper(this.getActivity().getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
         orderList = RestaurantModel.getOrdersForRestaurant(database, id);
-
+        System.out.println("orderlist size = " + orderList.size());
         database.close();
 
         tts = new TextToSpeech(this.getActivity(), this);
@@ -121,13 +121,13 @@ public class MyOrdersFragment extends Fragment implements TextToSpeech.OnInitLis
 //        }
 //
 //        database.close();
-        orderList = new ArrayList<Order>();
+      /*  orderList = new ArrayList<Order>();
 
         listAdapter = new MyOrdersListAdapter(fragActivity, orderList, id, tts);
         listView.setAdapter(listAdapter);
         if(openGroupIndex > -1){
             listView.expandGroup(openGroupIndex);
-        }
+        }*/
 
     }
 

@@ -53,8 +53,6 @@ public class BuildOrderPageTwo extends ActionBarActivity {
             category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
         }
 
-        database.close();
-
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -96,22 +94,26 @@ public class BuildOrderPageTwo extends ActionBarActivity {
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = new Order();
-                order.setName(collectionName);
-                order.setIngredients(listAdapter.getIngredientsList());
-                order.setRestId(id);
-                SQLiteDatabase database = dbHelper.openDatabase();
-                RestaurantModel.addOrder(database, order);
-                database.close();
-                Intent intent = new Intent(activity, FoodItems.class);
-                intent.putExtra("restId", id);
-                startActivity(intent);
+                addOrders();
             }
         });
 
         if(openGroupIndex > -1) {
             listView.expandGroup(openGroupIndex);
         }
+    }
+
+    public void addOrders(){
+        Order order = new Order();
+        order.setName(collectionName);
+        order.setIngredients(listAdapter.getIngredientsList());
+        order.setRestId(id);
+        SQLiteDatabase database = dbHelper.openDatabase();
+        RestaurantModel.addOrder(database, order);
+        database.close();
+        Intent intent = new Intent(this, FoodItems.class);
+        intent.putExtra("restId", id);
+        startActivity(intent);
     }
 
 
@@ -131,6 +133,11 @@ public class BuildOrderPageTwo extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == android.R.id.home) {
+            super.onBackPressed();
             return true;
         }
 
@@ -154,11 +161,11 @@ public class BuildOrderPageTwo extends ActionBarActivity {
             }
 
             database.close();
-            listAdapter = new BuildOrderPageTwoAdapter(this, categoryList, id, tts);
-            listView.setAdapter(listAdapter);
-            if(openGroupIndex > -1){
-                listView.expandGroup(openGroupIndex);
-            }
+        }
+        listAdapter = new BuildOrderPageTwoAdapter(this, categoryList, id, tts);
+        listView.setAdapter(listAdapter);
+        if(openGroupIndex > -1){
+            listView.expandGroup(openGroupIndex);
         }
 
     }
@@ -172,6 +179,7 @@ public class BuildOrderPageTwo extends ActionBarActivity {
             tts.shutdown();
             Log.d("TTS", "TTS Destroyed");
         }
+        dbHelper.close();
         super.onDestroy();
     }
 }

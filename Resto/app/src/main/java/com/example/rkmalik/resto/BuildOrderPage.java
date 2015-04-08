@@ -36,6 +36,7 @@ public class BuildOrderPage extends ActionBarActivity {
         dbHelper = new DBHelper(this.getApplicationContext());
         SQLiteDatabase database = dbHelper.openDatabase();
         collectionList = RestaurantModel.getCategory(database, id, true);
+        System.out.println(collectionList.size());
 
         for(int i=0; i<collectionList.size(); i++)
         {
@@ -97,23 +98,23 @@ public class BuildOrderPage extends ActionBarActivity {
     public void onResume()
     {
         super.onResume();
-        dbHelper = new DBHelper(this.getApplicationContext());
-        SQLiteDatabase database = dbHelper.openDatabase();
-        collectionList = RestaurantModel.getCategory(database, id, true);
+        System.out.println(collectionList.size());
+        if(dbHelper == null) {
+            dbHelper = new DBHelper(this.getApplicationContext());
+            SQLiteDatabase database = dbHelper.openDatabase();
+            collectionList = RestaurantModel.getCategory(database, id, true);
 
-        for(int i=0; i<collectionList.size(); i++)
-        {
-            Category category = collectionList.get(i);
-            category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
+            for (int i = 0; i < collectionList.size(); i++) {
+                Category category = collectionList.get(i);
+                category.setFoodItems(RestaurantModel.getFoodItemsBasedOnCategory(database, category.getId()));
+            }
+
+            database.close();
         }
-
-        database.close();
-        System.out.println("resume");
         listAdapter = new BuildOrderPageOneAdapter(this, collectionList, id);
         listView.setAdapter(listAdapter);
         if(openGroupIndex > -1){
             listView.expandGroup(openGroupIndex);
         }
-
     }
 }
