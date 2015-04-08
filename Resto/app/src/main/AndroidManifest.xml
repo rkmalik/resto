@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.restopackage.rkmalik.resto"
+    package="com.resto.rkmalik.resto"
     android:maxSdkVersion="22"
     android:minSdkVersion="14" >
 
@@ -14,7 +14,7 @@
             android:value="restoDB" />
         <meta-data
             android:name="VERSION"
-            android:value="2" />
+            android:value="3" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -23,7 +23,7 @@
             android:value="com.example.rkmalik.resto" />
 
         <activity
-            android:name="com.restopackage.rkmalik.resto.NearByRestaurants"
+            android:name="com.resto.rkmalik.resto.NearByRestaurants"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,42 +32,42 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.restopackage.rkmalik.resto.FoodItems"
+            android:name="com.resto.rkmalik.resto.FoodItems"
             android:label="@string/app_name"
-            android:parentActivityName="com.restopackage.rkmalik.resto.NearByRestaurants"
+            android:parentActivityName="com.resto.rkmalik.resto.NearByRestaurants"
             android:theme="@style/Theme.AppCompat" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.restopackage.rkmalik.resto.NearByRestaurants" />
+                android:value="com.resto.rkmalik.resto.NearByRestaurants" />
         </activity>
         <activity
-            android:name="com.restopackage.rkmalik.resto.FoodItemDetailActivity"
+            android:name="com.resto.rkmalik.resto.FoodItemDetailActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.restopackage.rkmalik.resto.FoodItems"
+            android:parentActivityName="com.resto.rkmalik.resto.FoodItems"
             android:theme="@style/Theme.AppCompat" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.restopackage.rkmalik.resto.FoodItems" />
+                android:value="com.resto.rkmalik.resto.FoodItems" />
         </activity>
         <activity
-            android:name="com.restopackage.rkmalik.resto.SettingsActivity"
+            android:name="com.resto.rkmalik.resto.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name="com.restopackage.rkmalik.resto.BuildOrderPage"
+            android:name="com.resto.rkmalik.resto.BuildOrderPage"
             android:label="Build Order - Step 1"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.restopackage.rkmalik.resto.FoodItems" />
+                android:value="com.resto.rkmalik.resto.FoodItems" />
         </activity>
         <activity
-            android:name="com.restopackage.rkmalik.resto.BuildOrderPageTwo"
+            android:name="com.resto.rkmalik.resto.BuildOrderPageTwo"
             android:label="Build Order - Step 2"
             android:theme="@style/Theme.AppCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.restopackage.rkmalik.resto.BuildOrderPage" />
+                android:value="com.resto.rkmalik.resto.BuildOrderPage" />
         </activity>
     </application>
 
