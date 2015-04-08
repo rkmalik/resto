@@ -26,6 +26,7 @@ public class BuildOrderPageOneAdapter extends BaseExpandableListAdapter {
 
     public BuildOrderPageOneAdapter(Context context, List<Category> orderCategory, int restId){
         _context = context;
+        System.out.println(orderCategory.size());
         _orderCategory = orderCategory;
         _restId = restId;
     }

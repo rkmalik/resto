@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -87,24 +88,33 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
 
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-        if(!isListEmpty()) {
+        //if(!isListEmpty()) {
+            System.out.println("here !!");
             final String headerText = (String) getGroup(i);
 
             if (view == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = infalInflater.inflate(R.layout.list_group, null);
+                view = infalInflater.inflate(R.layout.orders_list_group, null);
             }
 
             TextView lblListHeader = (TextView) view.findViewById(R.id.lblListHeader);
             lblListHeader.setTypeface(null, Typeface.BOLD);
             lblListHeader.setText(headerText);
-        }
+
+            Button delButton = (Button) view.findViewById(R.id.del_button);
+            delButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    System.out.println("Delete Pressed");
+                }
+            });
+       // }
         return view;
     }
 
     @Override
     public View getChildView(int grpPos, int childPos, boolean b, View convertView, ViewGroup viewGroup) {
-        if(!isListEmpty()) {
+        //if(!isListEmpty()) {
             final FoodItem foodItem = _orderList.get(grpPos).getIngredients().get(childPos);
 
             if (convertView == null) {
@@ -188,7 +198,7 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
                     _context.startActivity(detailIntent);
                 }
             });
-        }
+        //}
         return convertView;
     }
 
@@ -225,6 +235,7 @@ public class MyOrdersListAdapter extends BaseExpandableListAdapter implements Te
     }
 
     private boolean isListEmpty(){
+        System.out.println("isempty = " + this._orderList.size());
         return (this._orderList.size() <= 0);
     }
 }

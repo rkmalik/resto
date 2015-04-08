@@ -54,7 +54,7 @@ public class RestaurantModel {
 
     private static List<FoodItem> getFoodItems(SQLiteDatabase db, String ids)
     {
-        Cursor cursor = db.rawQuery("SELECT * FROM fooditem WHERE _id in "+ids+"", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM fooditem WHERE _id in ("+ids+")", null);
         return getFoodItemsFromCursor(cursor);
     }
 
@@ -113,6 +113,7 @@ public class RestaurantModel {
             String ingredients = cursor.getString((cursor.getColumnIndex("ingredients")));
             order.setIngredients(getFoodItems(db, ingredients));
             orders.add(order);
+            cursor.moveToNext();
         }
         return orders;
     }
@@ -130,7 +131,8 @@ public class RestaurantModel {
         System.out.println(order.getName());
         System.out.println(order.getRestId());
         System.out.println(ingredients); //(name, rest_id, ingredients)
-        db.execSQL("INSERT INTO orders VALUES ("+order.getName()+","+order.getRestId()+","+ingredients+")");
+        //db.execSQL("INSERT INTO orders VALUES (NULL,'"+order.getName()+"',"+order.getRestId()+",'"+ingredients+"')");
+        db.execSQL("INSERT INTO orders VALUES (NULL,'"+order.getName()+"',"+order.getRestId()+",'"+ingredients+"')");
     }
 
     public static void removeOrder(SQLiteDatabase db, int id)
@@ -140,9 +142,12 @@ public class RestaurantModel {
 
     public static List<Category> getCategory(SQLiteDatabase db, int restId, boolean isCollection)
     {
+        System.out.println("restId = " + restId );
         Cursor cursor = db.rawQuery("SELECT * FROM menu WHERE rest_id="+restId+" AND is_collection="+(isCollection?1:0)+" ORDER BY display_order",null);
-        cursor.moveToFirst();
+        boolean m = cursor.moveToFirst();
+        System.out.println("move to first = " + m);
         List<Category> categories = new ArrayList();
+        System.out.println("is after last = " + cursor.isAfterLast());
         while (cursor.isAfterLast() == false) {
             Category category = new Category();
             category.setId(cursor.getInt(cursor.getColumnIndex("category_id")));
